@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from "vue";
-import {useRouter} from "vue-router";
+
 
 export default defineComponent({
   name: 'VendorCardOnPage',
@@ -27,10 +27,8 @@ export default defineComponent({
   background-color: rgb(250, 249, 249);
   width: 380px;
   height: 86px;
-//margin: 15px 15px 15px 15px; position: relative;
   margin-top: 30px;
   border: solid 1px #dbdbdb;
-
 }
 
 .vendor:hover {

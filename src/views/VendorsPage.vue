@@ -1,21 +1,31 @@
 <script lang="ts">
-import VendorsList from "@/components/VendorsList.vue";
+import VendorsList from "@/components/VendorComponents/VendorsList.vue";
 import {defineComponent} from "vue";
 import TopPanel from "@/components/TopPanel.vue";
 import BottomPanel from "@/components/BottomPanel.vue";
-import AddVendorForm from "@/components/AddVendorForm.vue";
+import {useRouter} from "vue-router";
 
 export default defineComponent({
   name: 'VendorsPage',
   components: {
     VendorsList,
     TopPanel,
-    BottomPanel,
-    AddVendorForm,
+    BottomPanel
   },
   data() {
     return {
       showComponent: false
+    }
+  },
+  setup() {
+    const router = useRouter()
+    const click = () => {
+      router.push({
+        path: '/vendors/add'
+      })
+    }
+    return {
+      click
     }
   }
 })
@@ -31,7 +41,7 @@ export default defineComponent({
 
     <div class="add-buttons">
       <button class="round-button" data-toggle="tooltip" data-placement="right" title="Add"
-              @click="showComponent=!showComponent">+
+              @click="click">+
       </button>
       <add-vendor-form v-if="showComponent"></add-vendor-form>
     </div>

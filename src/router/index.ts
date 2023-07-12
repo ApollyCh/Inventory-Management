@@ -3,8 +3,8 @@ import AboutMainPage from "@/views/AboutMainPage.vue";
 import App from "@/App.vue";
 
 import VendorsPage from "@/views/VendorsPage.vue";
-import VendorInfoPanel from "@/components/VendorInfoPanel.vue";
-import VendorsList from "@/components/VendorsList.vue";
+import VendorInfoPanel from "@/components/VendorComponents/VendorInfoPanel.vue";
+import VendorRegistrationForm from "@/components/VendorComponents/VendorRegistrationForm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +28,11 @@ const router = createRouter({
       path: `/vendors/:id`,
       name: 'vendor-info',
       component: VendorInfoPanel
+    },
+    {
+      path: '/vendors/add',
+      name: 'add-vendor',
+      component: VendorRegistrationForm
     }
   ]
 })

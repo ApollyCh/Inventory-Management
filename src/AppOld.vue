@@ -1,7 +1,7 @@
 <script lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import VendorElement from './components/VendorCardOnPage.vue'
-import VendorInfo from './components/VendorsList.vue'
+import VendorElement from './components/VendorComponents/VendorCardOnPage.vue'
+import VendorInfo from './components/VendorComponents/VendorsList.vue'
 import { defineComponent, reactive, VueElement, ref } from 'vue';
 
 export default defineComponent({

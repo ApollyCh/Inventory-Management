@@ -7,7 +7,7 @@ export default defineComponent({
     const router = useRouter()
     const click = () => {
       router.push({
-        path: history.go(-1)
+        path: history.go(-1) as any
       })
     }
     return {
@@ -33,14 +33,6 @@ export default defineComponent({
 
 body {
   background-color: #ecebeb;
-}
-
-.bottom-panel {
-  visibility: hidden;
-}
-
-.top-panel {
-  visibility: hidden;
 }
 
 button {

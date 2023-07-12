@@ -29,7 +29,9 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: 0 -5px;
+  margin: 0;
+  box-shadow: 0px 0px 10px 0px rgb(121, 112, 112);
+
 
 }
 

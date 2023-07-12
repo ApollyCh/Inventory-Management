@@ -9,6 +9,6 @@
     }
   ],
   "compilerOptions": { 
-    "types": ["@vue/runtime-core"] 
+    "types": ["@vue/runtime-core", "node"]
   }
 }
