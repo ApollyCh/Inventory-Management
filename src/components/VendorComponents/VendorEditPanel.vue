@@ -1,36 +1,51 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
 import TopPanel from "../TopPanel.vue";
-import SavePanel from "@/components/VendorComponents/ChangingPannels/SavePanel.vue";
+import type { Vendor } from "@/lib/vendor";
+import { doc, getDoc } from "firebase/firestore";
+import db from "@/components/dataBase";
+import { useRoute } from "vue-router";
+import EditPanel from "@/components/VendorComponents/ChangingPannels/EditPanel.vue";
 
-export default defineComponent({
-  name: "VendorRegistrationForm",
-  components: { SavePanel, TopPanel },
-  setup() {
-    const click = () => {
-      history.go(-1);
-    };
-    return {
-      click,
-    };
-  },
-  data() {
-    return {
-      inputName: "",
-      inputPhone: "",
-      inputEmail: "",
-      inputUrl: "",
-      inputAddress: "",
-      inputLogo: "",
-      status: false,
-    };
-  },
-  methods: {
-    checkStatus() {
-      this.status = true;
-    },
-  },
+const click = () => {
+  history.go(-1);
+};
+
+let inputName: string;
+let inputPhone: string;
+let inputEmail: string;
+let inputUrl: string;
+let inputAddress: string;
+let inputLogo: string;
+
+const route = useRoute();
+const vendor = ref<Vendor>();
+const r = ref<any>();
+r.value = route.params;
+let show = ref(false);
+onMounted(async () => {
+  const docRef = doc(db, "Vendors", r.value.id);
+  const docSnap = await getDoc(docRef);
+  vendor.value = docSnap.data() as Vendor;
+  inputName = vendor.value.Name;
+  inputPhone = vendor.value.Phone;
+  inputEmail = vendor.value.Email;
+  inputUrl = vendor.value.URL;
+  inputAddress = vendor.value.Address;
+  inputLogo = vendor.value.LogoPath;
+  show.value = true;
 });
+
+let status = ref(false);
+
+const checkStatus = () => {
+  status.value = true;
+};
+
+const getName = () => {
+  inputName = vendor.value.Name;
+  console.log(inputName);
+};
 </script>
 
 <template>
@@ -50,7 +65,7 @@ export default defineComponent({
     </svg>
   </button>
 
-  <div class="registration-form">
+  <div class="registration-form" v-if="show">
     <form @submit.prevent="checkStatus">
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Name</p>
@@ -60,12 +75,19 @@ export default defineComponent({
           required
           id="name"
           v-model="inputName"
+          v-on:update:inputName="getName"
         />
       </div>
 
       <div class="input-block">
         <p>Path to Logo</p>
-        <input aria-label="Logo" type="url" id="logo" placeholder="https://" v-model="inputLogo"/>
+        <input
+          aria-label="Logo"
+          type="url"
+          id="logo"
+          placeholder="https://"
+          v-model="inputLogo"
+        />
       </div>
 
       <div class="input-block">
@@ -118,7 +140,7 @@ export default defineComponent({
         </p>
       </div>
 
-      <save-panel
+      <edit-panel
         table-name="Vendors"
         :name="inputName"
         :address="inputAddress"
@@ -127,7 +149,8 @@ export default defineComponent({
         :phone="inputPhone"
         :status="status"
         :logo="inputLogo"
-      ></save-panel>
+        :id="r.id"
+      ></edit-panel>
     </form>
   </div>
 

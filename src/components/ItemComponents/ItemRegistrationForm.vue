@@ -4,7 +4,12 @@ import TopPanel from "../TopPanel.vue";
 import SavePanel from "@/components/VendorComponents/ChangingPannels/SavePanel.vue";
 
 export default defineComponent({
-  name: "VendorRegistrationForm",
+  name: "ItemRegistrationForm",
+  computed: {
+    SavePanel() {
+      return SavePanel;
+    },
+  },
   components: { SavePanel, TopPanel },
   setup() {
     const click = () => {
@@ -16,13 +21,13 @@ export default defineComponent({
   },
   data() {
     return {
-      inputName: "",
-      inputPhone: "",
-      inputEmail: "",
-      inputUrl: "",
-      inputAddress: "",
-      inputLogo: "",
+      itemID: "",
+      name: "",
+      description: "",
+      imageURL: "",
+      vendorName: "",
       status: false,
+      purchaseCost: 0.0,
     };
   },
   methods: {
@@ -53,85 +58,68 @@ export default defineComponent({
   <div class="registration-form">
     <form @submit.prevent="checkStatus">
       <div class="input-block">
+        <p for="xxx_fname" class="form-label required">Item-ID</p>
+        <input aria-label="Item-ID" type="text" required v-model="itemID" />
+      </div>
+
+      <div class="input-block">
         <p for="xxx_fname" class="form-label required">Name</p>
-        <input
-          aria-label="Name"
-          type="text"
-          required
-          id="name"
-          v-model="inputName"
-        />
+        <input aria-label="Name" type="text" required v-model="name" />
       </div>
 
       <div class="input-block">
-        <p>Path to Logo</p>
-        <input aria-label="Logo" type="url" id="logo" placeholder="https://" v-model="inputLogo"/>
-      </div>
-
-      <div class="input-block">
-        <p>URL</p>
-        <input
-          aria-label="Name"
-          type="url"
-          placeholder="https://"
-          id="url"
-          v-model="inputUrl"
-        />
-      </div>
-
-      <div class="input-block">
-        <p for="xxx_fname" class="form-label required">Phone</p>
-        <input
-          aria-label="Name"
-          type="tel"
-          required
-          id="phone"
-          v-model="inputPhone"
-        />
-      </div>
-
-      <div class="input-block">
-        <p for="xxx_fname" class="form-label required">Email</p>
-        <input
-          aria-label="Name"
-          type="email"
-          required
-          id="email"
-          v-model="inputEmail"
-        />
-      </div>
-
-      <div class="input-block">
-        <p>Address</p>
+        <p>Description</p>
         <input
           aria-label="Name"
           type="text"
           id="address"
-          v-model="inputAddress"
+          v-model="description"
         />
       </div>
 
-      <hr v-if="status" />
-      <div v-if="status" class="delete-window">
-        <p id="label-delete" class="type-of-inf">
-          Are you sure you want to submit this information?
-        </p>
+      <div class="input-block">
+        <p for="xxx_fname" class="form-label required">Path to Image</p>
+        <input
+          aria-label="Name"
+          type="url"
+          placeholder="https://"
+          v-model="imageURL"
+          required
+        />
       </div>
 
-      <save-panel
-        table-name="Vendors"
-        :name="inputName"
-        :address="inputAddress"
-        :email="inputEmail"
-        :url="inputUrl"
-        :phone="inputPhone"
-        :status="status"
-        :logo="inputLogo"
-      ></save-panel>
+      <div class="input-block">
+        <p>Vendor</p>
+        <select v-model="vendorName">
+          <option value="1">Company 1</option>
+        </select>
+      </div>
+
+      <div class="input-block">
+        <p for="xxx_fname" class="form-label required">Purchase Cost ($)</p>
+        <input
+          aria-label="Name"
+          type="number"
+          step="0.01"
+          placeholder="0.00"
+          v-model="purchaseCost"
+          required
+        />
+      </div>
+
+<!--      <save-panel-->
+<!--        table-name="Vendors"-->
+<!--        :name="this.inputName"-->
+<!--        :address="this.inputAddress"-->
+<!--        :email="this.inputEmail"-->
+<!--        :url="this.inputUrl"-->
+<!--        :phone="this.inputPhone"-->
+<!--        :status="this.status"-->
+<!--      ></save-panel>-->
     </form>
   </div>
 
-  <top-panel name_of_page="Vendors Form" vis="visible"></top-panel>
+  <top-panel name_of_page="Details" vis="visible"></top-panel>
 </template>
 
 <style scoped>
@@ -156,6 +144,20 @@ input {
   color: #202124;
   border-radius: 6px;
   border: solid 1px #8f8f8f;
+}
+
+select {
+  width: 100%;
+  height: 48px;
+  font-family: "Rubik", sans-serif;
+  font-size: 20px;
+  color: #202124;
+  border-radius: 6px;
+  border: solid 1px #8f8f8f;
+}
+
+select:checked {
+  border: solid 3px #464646;
 }
 
 p {
@@ -188,13 +190,5 @@ p {
   content: " *";
   color: red;
   font-weight: 100;
-}
-
-.delete-window {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  font-size: 26px;
 }
 </style>

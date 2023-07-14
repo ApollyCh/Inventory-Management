@@ -1,30 +1,25 @@
 <script lang="ts">
-import {defineComponent} from "vue";
-
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'VendorCardOnPage',
-  props: ['id', 'name_of_company', 'num', 'email']
-})
+  name: "VendorCardOnPage",
+  props: ["id", "name_of_company", "num", "email", "logo"],
+});
 </script>
 
 <template>
   <div class="vendor">
-    <img
-        src="https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600">
+    <img :src="logo" alt="company logo" />
     <div class="info">
       <h2>{{ name_of_company }}</h2>
       <h3>{{ num }}</h3>
     </div>
-
   </div>
 </template>
 
-
 <style scoped>
-
 .vendor {
-  background-color: rgb(250, 249, 249);
+  background-color: rgb(254, 254, 254);
   width: 380px;
   height: 86px;
   margin-top: 30px;
@@ -38,22 +33,20 @@ export default defineComponent({
 }
 
 h2 {
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   font-size: 16px;
   color: #202124;
   position: relative;
   margin-left: 0px;
-
 }
 
 h3 {
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   font-size: 12px;
   position: relative;
   color: #202124;
   opacity: 80%;
   margin-left: 0px;
-
 }
 
 .info {

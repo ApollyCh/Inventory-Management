@@ -5,6 +5,7 @@
       :key="vendor.id"
       :name_of_company="vendor.name"
       :num="vendor.phone"
+      :logo="vendor.logo"
       @click="goToVendor(vendor.id)"
     >
     </VendorCardOnPage>
@@ -14,24 +15,9 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import VendorCardOnPage from "@/components/VendorComponents/VendorCardOnPage.vue";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyANJLDf9txyAU8N1Y8jT7cFY6Ny1szHC9s",
-  authDomain: "inventory-manager-b4ad1.firebaseapp.com",
-  projectId: "inventory-manager-b4ad1",
-  storageBucket: "inventory-manager-b4ad1.appspot.com",
-  messagingSenderId: "661733570798",
-  appId: "1:661733570798:web:73df74cd973d17fb34dbff",
-  measurementId: "G-06C0XGZQJ0",
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
+import { collection, getDocs } from "firebase/firestore";
+import VendorCardOnPage from "../VendorComponents/VendorCardOnPage.vue";
+import db from "../dataBase";
 
 export const vendors = ref([]) as any;
 export default defineComponent({
@@ -52,6 +38,7 @@ export default defineComponent({
           url: doc.data().URL,
           email: doc.data().Email,
           numOfItems: doc.data().NumOfItems,
+          logo: doc.data().LogoPath,
         };
         vs.push(v);
       });
@@ -62,15 +49,15 @@ export default defineComponent({
   data() {
     return {
       vendors,
-      selectedVendor: null
+      selectedVendor: null,
     };
   },
 
   methods: {
-    goToVendor(vendorId) {
+    goToVendor(vendorId: string) {
       this.$router.push(`/vendors/${vendorId}`);
     },
-  }
+  },
 });
 </script>
 
@@ -78,5 +65,8 @@ export default defineComponent({
 .vendors_list {
   display: grid;
   grid-template-columns: repeat(3, 0.3fr);
+  justify-content: center;
+  position: relative;
+  top: 60px;
 }
 </style>

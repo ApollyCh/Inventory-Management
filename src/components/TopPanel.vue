@@ -7,13 +7,14 @@ export default defineComponent({
   props: ['name_of_page'],
   setup() {
     const router = useRouter()
-    const click = () => {
+    const toAbout = () => {
       router.push({
         path: '/about'
       })
     }
+
     return {
-      click
+      toAbout
     }
   }
 })
@@ -22,7 +23,7 @@ export default defineComponent({
 
 <template>
   <div class="top-panel">
-    <div class="click-to-about-page" @click="click">
+    <div class="click-to-about-page" @click="toAbout">
       <img id="top-img"
            src="https://www.appsheet.com:443/fsimage.png?appid=59e436dd-c035-4089-b906-3b1d28fdd2dd&datasource=google&filename=DocId%3D18ddbYWpxQhHGBNj4tY8uVC_4moFpZ7Ff&signature=7eb4c1c1faf0c15e5fd798c1a445c50d05a296e048a7863eb56a774746e8f050&tableprovider=google&userid=2078346">
       <p>{{ name_of_page }}</p>

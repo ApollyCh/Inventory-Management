@@ -4,6 +4,10 @@ body {
     background-color: #ecebeb;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 /*p {*/
 /*    font-family: 'Rubik', sans-serif;*/
 /*    position: absolute;*/
