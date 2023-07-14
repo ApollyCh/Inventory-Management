@@ -93,7 +93,7 @@ const modal = ref(false);
     <hr v-if="modal" />
     <div v-if="modal" class="delete-window">
       <p id="label-delete" class="type-of-inf">
-        Are you sure you want to delete this message?
+        Are you sure you want to delete this vendor?
       </p>
       <button class="no-delete" @click="modal = !modal">No</button>
       <button class="yes-delete" @click="deleteVendor">Yes</button>

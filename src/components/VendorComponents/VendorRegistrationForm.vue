@@ -1,19 +1,15 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import TopPanel from "../TopPanel.vue";
-import SavePanel from "@/components/VendorComponents/ChangingPannels/SavePanel.vue";
+import { addDoc, collection } from "firebase/firestore";
+import db from "@/components/dataBase";
+import router from "@/router";
+
 
 export default defineComponent({
   name: "VendorRegistrationForm",
-  components: { SavePanel, TopPanel },
-  setup() {
-    const click = () => {
-      history.go(-1);
-    };
-    return {
-      click,
-    };
-  },
+  components: { TopPanel },
+
   data() {
     return {
       inputName: "",
@@ -22,19 +18,34 @@ export default defineComponent({
       inputUrl: "",
       inputAddress: "",
       inputLogo: "",
-      status: false,
+      status: ref(false)
     };
   },
   methods: {
-    checkStatus() {
-      this.status = true;
-    },
+    async addVendor() {
+      let logo: string = this.inputLogo;
+      if (logo === "")
+        logo =
+          "https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600";
+      await addDoc(collection(db, "Vendors"), {
+        Name: this.inputName,
+        Phone: this.inputPhone,
+        Address: this.inputAddress,
+        URL: this.inputUrl,
+        Email: this.inputEmail,
+        LogoPath: logo,
+      });
+      console.log("+");
+      this.status = true
+      if (this.status)
+        await router.push('/vendors')
+    }
   },
 });
 </script>
 
 <template>
-  <button class="button-left-arrow" @click="click" id="but">
+  <button class="button-left-arrow" @click="$router.back()" id="but">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="20"
@@ -51,7 +62,7 @@ export default defineComponent({
   </button>
 
   <div class="registration-form">
-    <form @submit.prevent="checkStatus">
+    <form @submit.prevent="addVendor">
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Name</p>
         <input
@@ -65,7 +76,13 @@ export default defineComponent({
 
       <div class="input-block">
         <p>Path to Logo</p>
-        <input aria-label="Logo" type="url" id="logo" placeholder="https://" v-model="inputLogo"/>
+        <input
+          aria-label="Logo"
+          type="url"
+          id="logo"
+          placeholder="https://"
+          v-model="inputLogo"
+        />
       </div>
 
       <div class="input-block">
@@ -111,23 +128,15 @@ export default defineComponent({
         />
       </div>
 
-      <hr v-if="status" />
-      <div v-if="status" class="delete-window">
-        <p id="label-delete" class="type-of-inf">
-          Are you sure you want to submit this information?
-        </p>
+      <div class="bottom-panel" id="bottom-panel">
+        <a @click="$router.back()" href="#" class="nav-item">Cancel</a>
+        <input
+          type="submit"
+          value="Save"
+          class="nav-item"
+          id="save"
+        />
       </div>
-
-      <save-panel
-        table-name="Vendors"
-        :name="inputName"
-        :address="inputAddress"
-        :email="inputEmail"
-        :url="inputUrl"
-        :phone="inputPhone"
-        :status="status"
-        :logo="inputLogo"
-      ></save-panel>
     </form>
   </div>
 
@@ -190,11 +199,47 @@ p {
   font-weight: 100;
 }
 
-.delete-window {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.bottom-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0;
+  box-shadow: 0 0 10px 0 rgb(121, 112, 112);
+}
+
+.nav-item {
+  font-family: "Rubik", sans-serif;
+  flex: 1 1 auto;
+  /* margin: 0 80px; */
+  padding: 15px;
+  color: #202124;
+  width: 70px;
+  opacity: 80%;
+  text-decoration: none;
   text-align: center;
-  font-size: 26px;
+  background-color: white;
+  border: 0;
+}
+
+.nav-item:hover {
+  background-color: #c8c8c8;
+  color: #202124;
+  transition: background-color 0.5s;
+}
+
+#save {
+  color: #565ed7;
+  font-weight: bolder;
+  font-size: 17px;
+}
+
+input:hover {
+  cursor: pointer;
 }
 </style>

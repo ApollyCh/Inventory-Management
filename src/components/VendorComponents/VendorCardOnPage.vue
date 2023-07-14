@@ -37,7 +37,7 @@ h2 {
   font-size: 16px;
   color: #202124;
   position: relative;
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 h3 {
@@ -46,17 +46,18 @@ h3 {
   position: relative;
   color: #202124;
   opacity: 80%;
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 .info {
   position: relative;
-  top: -75px;
-  left: 90px;
+  margin-top: -75px;
+  margin-left: 90px;
 }
 
 img {
   width: 75px;
   height: 75px;
 }
+
 </style>
