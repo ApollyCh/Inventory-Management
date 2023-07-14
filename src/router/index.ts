@@ -5,6 +5,7 @@ import App from "@/App.vue";
 import VendorsPage from "@/views/VendorsPage.vue";
 import VendorInfoPanel from "@/components/VendorComponents/VendorInfoPanel.vue";
 import VendorRegistrationForm from "@/components/VendorComponents/VendorRegistrationForm.vue";
+import ItemsPage from "@/views/ItemsPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +34,17 @@ const router = createRouter({
       path: '/vendors/add',
       name: 'add-vendor',
       component: VendorRegistrationForm
-    }
+    },
+    {
+      path: '/items',
+      name: 'items',
+      component: ItemsPage
+    },
+    {
+      path: `/items/:id`,
+      name: 'item-info',
+      component: ItemsPage
+    },
   ]
 })
 

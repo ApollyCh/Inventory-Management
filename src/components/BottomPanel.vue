@@ -1,8 +1,19 @@
 <script lang="ts">
 import {defineComponent} from "vue";
+import router from "@/router";
 
 export default defineComponent({
-  name: 'BottomPanel'
+  name: 'BottomPanel',
+  setup() {
+    const toItems = () => {
+      router.push({
+        path: '/items'
+      })
+    }
+    return {
+      toItems
+    }
+  }
 })
 
 
@@ -10,7 +21,7 @@ export default defineComponent({
 
 <template>
   <div class="bottom-panel" id="bottom-panel">
-    <a href="#" class="nav-item">Items</a>
+    <a href="#" class="nav-item" @click="toItems">Items</a>
     <a href="#" class="nav-item">Inventory Log</a>
     <a href="#" class="nav-item">Monitor</a>
     <a href="/vendors" class="nav-item">Vendors</a>

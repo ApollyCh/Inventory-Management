@@ -24,7 +24,7 @@ export default defineComponent({
 <style scoped>
 
 .vendor {
-  background-color: rgb(250, 249, 249);
+  background-color: rgb(254, 254, 254);
   width: 380px;
   height: 86px;
   margin-top: 30px;

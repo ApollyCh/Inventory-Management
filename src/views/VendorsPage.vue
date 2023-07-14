@@ -66,6 +66,7 @@ export default defineComponent({
 
 
 .round-button {
+  position: fixed;
   width: 80px;
   height: 80px;
   line-height: 70px;
@@ -79,8 +80,7 @@ export default defineComponent({
   font-size: 45px;
   font-family: 'Rubik', sans-serif;
   font-weight: bold;
-  position: relative;
-  top: 310px;
+  top: 510px;
   left: 93%;
 
 }
