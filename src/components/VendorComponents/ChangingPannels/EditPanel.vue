@@ -2,7 +2,7 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc  } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyANJLDf9txyAU8N1Y8jT7cFY6Ny1szHC9s",
@@ -18,14 +18,21 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 export default defineComponent({
-  name: "SavePanel",
-  props: ["tableName", "name", "phone", "url", "address", "email", "status"],
+  props: [
+    "tableName",
+    "name",
+    "phone",
+    "url",
+    "address",
+    "email",
+    "status",
+    "logo",
+    "id"
+  ],
   setup() {
     const router = useRouter();
     const back = () => {
-      router.push({
-        path: "/vendors",
-      });
+      router.back()
     };
     return {
       back,
@@ -33,13 +40,20 @@ export default defineComponent({
   },
   methods: {
     async addVendor() {
+
+      let logo: string = this.logo;
+      if (logo === "")
+        logo =
+          "https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600";
+
       if (this.status === true) {
-        await addDoc(collection(db, String(this.tableName)), {
+        await updateDoc(doc(db, 'Vendors', this.id), {
           Name: this.name,
           Phone: this.phone,
           Address: this.address,
           URL: this.url,
           Email: this.email,
+          LogoPath: logo
         });
         this.back();
       }

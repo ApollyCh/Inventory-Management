@@ -1,96 +1,42 @@
-<script lang="ts">
+<script setup lang="ts">
 import TopPanel from "../TopPanel.vue";
 import BottomPanel from "../BottomPanel.vue";
-import { useRouter } from "vue-router";
-import { defineComponent, onMounted } from "vue";
-//
-// import firebase from 'firebase/app';
-// import 'firebase/database';
-// import { ref } from "vue";
-//
-// const firebaseConfig = {
-//   apiKey: "AIzaSyANJLDf9txyAU8N1Y8jT7cFY6Ny1szHC9s",
-//   authDomain: "inventory-manager-b4ad1.firebaseapp.com",
-//   projectId: "inventory-manager-b4ad1",
-//   storageBucket: "inventory-manager-b4ad1.appspot.com",
-//   messagingSenderId: "661733570798",
-//   appId: "1:661733570798:web:73df74cd973d17fb34dbff",
-//   measurementId: "G-06C0XGZQJ0",
-// };
-//
-// firebase.initializeApp(firebaseConfig);
-//
-// const dbRef = firebase.database().ref('Vendors');
-export default defineComponent({
-  name: "VendorInfoPanel",
-  components: {
-    BottomPanel,
-    TopPanel,
-  },
+import { useRouter, useRoute } from "vue-router";
+import { onMounted, ref } from "vue";
+import db from "../dataBase";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import type { Vendor } from "@/lib/vendor";
 
-  setup() {
-    const router = useRouter();
-    const click = () => {
-      router.push({
-        path: history.go(-1) as any,
-      });
-    };
-    const toVendorPage = () => {
-      router.push({
-        path: "/vendors",
-      });
-    };
+const router = useRouter();
+const route = useRoute();
 
-    // const data = ref(null);
-    //
-    // onMounted(async () => {
-    //   // Fetch data from Firebase by ID
-    //   // const docId = 'you-id'; // Replace with the actual document ID
-    //   const docRef = db.collection("your-collection").doc(this.id()); // Replace with the actual collection name
-    //
-    //   try {
-    //     const snapshot = await docRef.get();
-    //     if (snapshot.exists()) {
-    //       data.value = snapshot.data();
-    //     } else {
-    //       console.log("Document does not exist");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error getting document:", error);
-    //   }
-    // });
-    return {
-      click,
-      toVendorPage,
-      // data,
-    };
-  },
-  data() {
-    return {
-      modal: false,
-      vendor: null,
-    };
-  },
-  // methods: {
-  //   async fetchVentor(id: string) {
-  //     const ref = db.ref("Vendors");
-  //     this.vendor = doc;
-  //   },
-  // },
-
-  computed: {
-    id() {
-      return this.$route.params.id;
-    },
-  },
-  created() {
-    this.fetchVentor(this.id);
-  },
+let show = ref(false)
+const vendor = ref<Vendor>();
+const r = ref<any>();
+r.value = route.params;
+onMounted(async () => {
+  const docRef = doc(db, "Vendors", r.value.id);
+  const docSnap = await getDoc(docRef);
+  vendor.value = docSnap.data() as Vendor;
+  show.value = true
 });
+
+const deleteVendor = async () => {
+  await deleteDoc(doc(db, "Vendors", r.value.id));
+  await router.push({
+    path: "/vendors",
+  });
+};
+
+const toEditVendor = () => {
+  router.push(`/vendors/${r.value.id}/edit`);
+};
+
+const modal = ref(false);
 </script>
 
 <template>
-  <button class="button-left-arrow" @click="click">
+  <button class="button-left-arrow" @click="router.back">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="20"
@@ -106,35 +52,39 @@ export default defineComponent({
     </svg>
   </button>
 
-  <div class="container-of-vendor">
+  <div class="container-of-vendor" v-if="show">
     <img
-      src="https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600"
+      :src="
+        vendor?.LogoPath ??
+        'https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600'
+      "
+      alt="Company Logo"
     />
 
     <div class="all-container">
       <div class="name">
         <p class="type-of-inf">Name</p>
-        <p class="information">{{ vendor.name }}</p>
+        <p class="information">{{ vendor?.Name ?? "" }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">URL</p>
-        <p class="information">{{ vendor.url }}</p>
+        <p class="information">{{ vendor?.URL ?? "" }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Phone</p>
-        <p class="information">{{ vendor.phone }}</p>
+        <p class="information">{{ vendor?.Phone ?? "" }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Email</p>
-        <p class="information">{{ vendor.email }}</p>
+        <p class="information">{{ vendor?.Email ?? "" }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Address</p>
-        <p class="information">{{ vendor.address }}</p>
+        <p class="information">{{ vendor?.Address ?? "" }}</p>
       </div>
     </div>
     <button class="delete-button" @click="modal = !modal" v-if="!modal">
@@ -146,8 +96,34 @@ export default defineComponent({
         Are you sure you want to delete this message?
       </p>
       <button class="no-delete" @click="modal = !modal">No</button>
-      <button class="yes-delete" @click="toVendorPage">Yes</button>
+      <button class="yes-delete" @click="deleteVendor">Yes</button>
     </div>
+  </div>
+  <div class="add-buttons">
+    <button
+      class="round-button"
+      data-toggle="tooltip"
+      data-placement="right"
+      title="Edit"
+      @click="toEditVendor"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="40"
+        height="40"
+        fill="currentColor"
+        class="bi bi-pencil-square"
+        viewBox="1 -1 15 16"
+      >
+        <path
+          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+        />
+        <path
+          fill-rule="evenodd"
+          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+        />
+      </svg>
+    </button>
   </div>
   <top-panel name_of_page="Details"></top-panel>
 
@@ -155,17 +131,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-vendors-list {
-  visibility: hidden;
-}
-
-.some-kind-of-body {
-  justify-content: center;
-  background-color: #565ed7;
-  width: 1000px;
-  height: 1000px;
-}
-
 .container-of-vendor {
   width: 768px;
   height: max-content;
@@ -227,7 +192,7 @@ p.information {
   background-color: #d91616;
   border: 0;
   border-radius: 10px;
-  box-shadow: 0px 4px 4px rgb(190, 151, 151);
+  box-shadow: 0 4px 4px rgb(190, 151, 151);
 }
 
 .no-delete:hover {
@@ -251,7 +216,7 @@ p.information {
   background-color: #efefef;
   border: 0;
   border-radius: 10px;
-  box-shadow: 0px 4px 4px rgb(190, 151, 151);
+  box-shadow: 0 4px 4px rgb(190, 151, 151);
   margin-right: 10px;
 }
 
@@ -294,5 +259,30 @@ p.information {
 .delete-button:hover {
   cursor: pointer;
   box-shadow: -2px 2px 8px 4px rgb(190, 151, 151);
+}
+
+.round-button {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  line-height: 70px;
+  border: 2px solid #f5f5f5;
+  border-radius: 50%;
+  color: #f5f5f5;
+  text-align: center;
+  text-decoration: none;
+  background: #565ed7;
+  box-shadow: 0 0 3px gray;
+  font-size: 45px;
+  font-family: "Rubik", sans-serif;
+  font-weight: bold;
+  top: 550px;
+  left: 93%;
+}
+
+.round-button:hover {
+  background: #848cff;
+  transition: background-color 0.3s;
+  cursor: pointer;
 }
 </style>

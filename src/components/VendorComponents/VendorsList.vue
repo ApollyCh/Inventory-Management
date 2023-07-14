@@ -5,6 +5,7 @@
       :key="vendor.id"
       :name_of_company="vendor.name"
       :num="vendor.phone"
+      :logo="vendor.logo"
       @click="goToVendor(vendor.id)"
     >
     </VendorCardOnPage>
@@ -37,6 +38,7 @@ export default defineComponent({
           url: doc.data().URL,
           email: doc.data().Email,
           numOfItems: doc.data().NumOfItems,
+          logo: doc.data().LogoPath,
         };
         vs.push(v);
       });
@@ -52,7 +54,7 @@ export default defineComponent({
   },
 
   methods: {
-    goToVendor(vendorId) {
+    goToVendor(vendorId: string) {
       this.$router.push(`/vendors/${vendorId}`);
     },
   },
@@ -63,5 +65,8 @@ export default defineComponent({
 .vendors_list {
   display: grid;
   grid-template-columns: repeat(3, 0.3fr);
+  justify-content: center;
+  position: relative;
+  top: 60px;
 }
 </style>

@@ -1,70 +1,58 @@
 <script lang="ts">
 import VendorsList from "@/components/VendorComponents/VendorsList.vue";
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 import TopPanel from "@/components/TopPanel.vue";
 import BottomPanel from "@/components/BottomPanel.vue";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
-  name: 'VendorsPage',
+  name: "VendorsPage",
   components: {
     VendorsList,
     TopPanel,
-    BottomPanel
+    BottomPanel,
   },
   data() {
     return {
-      showComponent: false
-    }
+      showComponent: false,
+    };
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
     const click = () => {
       router.push({
-        path: '/vendors/add'
-      })
-    }
+        path: "/vendors/add",
+      });
+    };
     return {
-      click
-    }
-  }
-})
+      click,
+    };
+  },
+});
 </script>
-
 
 <template>
   <div>
     <top-panel name_of_page="Vendors"></top-panel>
     <bottom-panel></bottom-panel>
-    <VendorsList>
-    </VendorsList>
+    <VendorsList> </VendorsList>
 
     <div class="add-buttons">
-      <button class="round-button" data-toggle="tooltip" data-placement="right" title="Add"
-              @click="click">+
+      <button
+        class="round-button"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Add"
+        @click="click"
+      >
+        +
       </button>
-      <add-vendor-form v-if="showComponent"></add-vendor-form>
+      <!--      <add-vendor-form v-if="showComponent"></add-vendor-form>-->
     </div>
   </div>
 </template>
 
-
 <style scoped>
-.top-panel {
-  visibility: visible;
-}
-
-.bottom-panel {
-  visibility: visible;
-}
-
-.vendors_list {
-  justify-content: center;
-  position: relative;
-  top: 60px;
-}
-
-
 .round-button {
   position: fixed;
   width: 80px;
@@ -78,11 +66,10 @@ export default defineComponent({
   background: #565ed7;
   box-shadow: 0 0 3px gray;
   font-size: 45px;
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   font-weight: bold;
-  top: 510px;
+  top: 550px;
   left: 93%;
-
 }
 
 .round-button:hover {
@@ -90,5 +77,4 @@ export default defineComponent({
   transition: background-color 0.3s;
   cursor: pointer;
 }
-
 </style>

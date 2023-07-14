@@ -1,8 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import TopPanel from "../TopPanel.vue";
-import { useRouter } from "vue-router";
-import SavePanel from "@/components/SavePanel.vue";
+import SavePanel from "@/components/VendorComponents/ChangingPannels/SavePanel.vue";
 
 export default defineComponent({
   name: "ItemRegistrationForm",
@@ -108,15 +107,15 @@ export default defineComponent({
         />
       </div>
 
-      <save-panel
-        table-name="Vendors"
-        :name="this.inputName"
-        :address="this.inputAddress"
-        :email="this.inputEmail"
-        :url="this.inputUrl"
-        :phone="this.inputPhone"
-        :status="this.status"
-      ></save-panel>
+<!--      <save-panel-->
+<!--        table-name="Vendors"-->
+<!--        :name="this.inputName"-->
+<!--        :address="this.inputAddress"-->
+<!--        :email="this.inputEmail"-->
+<!--        :url="this.inputUrl"-->
+<!--        :phone="this.inputPhone"-->
+<!--        :status="this.status"-->
+<!--      ></save-panel>-->
     </form>
   </div>
 
