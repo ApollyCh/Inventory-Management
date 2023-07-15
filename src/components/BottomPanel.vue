@@ -41,7 +41,7 @@ export default defineComponent({
   flex-direction: row;
   justify-content: center;
   margin: 0;
-  box-shadow: 0px 0px 10px 0px rgb(121, 112, 112);
+  box-shadow: 0 0 10px 0 rgb(121, 112, 112);
 
 
 }

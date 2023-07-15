@@ -6,7 +6,7 @@ import VendorsPage from "@/views/VendorsPage.vue";
 import VendorInfoPanel from "@/components/VendorComponents/VendorInfoPanel.vue";
 import VendorRegistrationForm from "@/components/VendorComponents/VendorRegistrationForm.vue";
 import ItemsPage from "@/views/ItemsPage.vue";
-import VendorEditPanel from "@/components/VendorComponents/VendorEditPanel.vue";
+import VendorEditPanel from "@/components/VendorComponents/VendorEditPage.vue";
 import InventoryLogPage from "@/views/InventoryLogPage.vue";
 
 const router = createRouter({

@@ -57,7 +57,7 @@ export default defineComponent({
   position: fixed;
   width: 80px;
   height: 80px;
-  line-height: 70px;
+  line-height: 60px;
   border: 2px solid #f5f5f5;
   border-radius: 50%;
   color: #f5f5f5;
@@ -77,4 +77,41 @@ export default defineComponent({
   transition: background-color 0.3s;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 480px) {
+  VendorsList {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .round-button {
+    width: 60px;
+    height: 60px;
+    left: 80%;
+    top: 80%;
+    line-height: 50px;
+    z-index: 10;
+
+  }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 1024px){
+  VendorsList {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .round-button {
+    width: 70px;
+    height: 70px;
+    left: 80%;
+    top: 77%;
+    line-height: 50px;
+    z-index: 10;
+
+  }
+}
+
 </style>

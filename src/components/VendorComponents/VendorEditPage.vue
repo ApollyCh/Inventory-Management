@@ -2,10 +2,10 @@
 import { onMounted, ref } from "vue";
 import TopPanel from "../TopPanel.vue";
 import type { Vendor } from "@/lib/vendor";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import db from "@/components/dataBase";
 import { useRoute } from "vue-router";
-import EditPanel from "@/components/VendorComponents/ChangingPannels/EditPanel.vue";
+import router from "@/router";
 
 const click = () => {
   history.go(-1);
@@ -38,14 +38,23 @@ onMounted(async () => {
 
 let status = ref(false);
 
-const checkStatus = () => {
-  status.value = true;
-};
+async function editVendor() {
+  let logo: string = inputLogo;
+  if (logo === "")
+    logo =
+      "https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600";
 
-const getName = () => {
-  inputName = vendor.value.Name;
-  console.log(inputName);
-};
+  await updateDoc(doc(db, "Vendors", r.value.id), {
+    Name: inputName,
+    Phone: inputPhone,
+    Address: inputAddress,
+    URL: inputUrl,
+    Email: inputEmail,
+    LogoPath: logo,
+  });
+  status.value = true;
+  if (status.value) await router.back();
+}
 </script>
 
 <template>
@@ -66,7 +75,7 @@ const getName = () => {
   </button>
 
   <div class="registration-form" v-if="show">
-    <form @submit.prevent="checkStatus">
+    <form @submit.prevent="editVendor">
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Name</p>
         <input
@@ -75,7 +84,6 @@ const getName = () => {
           required
           id="name"
           v-model="inputName"
-          v-on:update:inputName="getName"
         />
       </div>
 
@@ -132,29 +140,14 @@ const getName = () => {
           v-model="inputAddress"
         />
       </div>
-
-      <hr v-if="status" />
-      <div v-if="status" class="delete-window">
-        <p id="label-delete" class="type-of-inf">
-          Are you sure you want to submit this information?
-        </p>
+      <div class="bottom-panel" id="bottom-panel">
+        <a @click="$router.back()" href="#" class="nav-item">Cancel</a>
+        <input type="submit" value="Save" class="nav-item" id="save" />
       </div>
-
-      <edit-panel
-        table-name="Vendors"
-        :name="inputName"
-        :address="inputAddress"
-        :email="inputEmail"
-        :url="inputUrl"
-        :phone="inputPhone"
-        :status="status"
-        :logo="inputLogo"
-        :id="r.id"
-      ></edit-panel>
     </form>
   </div>
 
-  <top-panel name_of_page="Vendors Form" vis="visible"></top-panel>
+  <top-panel name_of_page="Edit" vis="visible"></top-panel>
 </template>
 
 <style scoped>
@@ -213,11 +206,47 @@ p {
   font-weight: 100;
 }
 
-.delete-window {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.bottom-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0;
+  box-shadow: 0 0 10px 0 rgb(121, 112, 112);
+}
+
+.nav-item {
+  font-family: "Rubik", sans-serif;
+  flex: 1 1 auto;
+  /* margin: 0 80px; */
+  padding: 15px;
+  color: #202124;
+  width: 70px;
+  opacity: 80%;
+  text-decoration: none;
   text-align: center;
-  font-size: 26px;
+  background-color: white;
+  border: 0;
+}
+
+.nav-item:hover {
+  background-color: #c8c8c8;
+  color: #202124;
+  transition: background-color 0.5s;
+}
+
+#save {
+  color: #565ed7;
+  font-weight: bolder;
+  font-size: 17px;
+}
+
+input:hover {
+  cursor: pointer;
 }
 </style>

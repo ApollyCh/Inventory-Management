@@ -118,4 +118,8 @@ export default defineComponent({
   font-weight: bolder;
   font-size: 17px;
 }
+
+input:hover {
+  cursor: pointer;
+}
 </style>

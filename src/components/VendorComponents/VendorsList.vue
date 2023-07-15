@@ -69,4 +69,12 @@ export default defineComponent({
   position: relative;
   top: 60px;
 }
+
+@media only screen and (max-width: 890px) {
+  .vendors_list {
+    grid-template-columns: repeat(1, auto);
+
+  }
+}
+
 </style>
