@@ -24,16 +24,13 @@ export default defineComponent({
     <div class="text">
       <h1>Inventory Management</h1>
       <h2>Manage inventory levels, stock value and vendor details</h2>
+      <button id="ok-button" @click="click">OK</button>
+
     </div>
   </div>
-  <button id="ok-button" @click="click">OK</button>
 </template>
 
 <style scoped>
-
-body {
-  background-color: #ecebeb;
-}
 
 button {
   width: 140px;
@@ -46,8 +43,10 @@ button {
   color: #ffffff;
   border-radius: 10px;
   position: relative;
-  top: 450px;
-  left: 45%;
+  top: 40vh;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 button:hover {
@@ -58,12 +57,12 @@ button:hover {
 
 .thebody {
   width: max-content;
-  height: max-content;
-  display: flex;
   flex-direction: row;
   position: relative;
-  top: 200px;
-  margin-left: 27%;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 10%;
 }
 
 .text {
@@ -73,24 +72,45 @@ button:hover {
 h1 {
   font-family: 'Rubik', sans-serif;
   position: relative;
-  margin-left: 70px;
   font-weight: bold;
   font-size: 20px;
+
 }
 
 h2 {
   margin-top: -2px;
   font-family: 'Rubik', sans-serif;
   position: relative;
-  margin-left: 70px;
   font-weight: bold;
   font-size: 17px;
+
 }
 
 
 img {
   position: relative;
 
+}
+
+@media only screen and (max-width: 890px) {
+  img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .thebody {
+    width: 60vw;
+  }
+}
+
+@media only screen and (min-width: 780px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1800px) {
+  .vendors_list {
+    grid-template-columns: repeat(3, 0.5fr);
+    padding-left: 4vw;
+  }
 }
 </style>
 <script setup lang="ts">

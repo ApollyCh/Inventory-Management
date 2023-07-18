@@ -186,7 +186,7 @@ p {
   border: 0;
   background-color: white;
   margin-top: -45px;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .button-left-arrow:hover {
@@ -211,6 +211,7 @@ p {
   justify-content: center;
   margin: 0;
   box-shadow: 0 0 10px 0 rgb(121, 112, 112);
+  z-index: 1000;
 }
 
 .nav-item {
@@ -241,5 +242,22 @@ p {
 
 input:hover {
   cursor: pointer;
+}
+
+
+@media only screen and (max-width: 720px) {
+  .registration-form {
+    width: 97vw;
+  }
+
+  input {
+    width: 97%;
+  }
+}
+
+@media only screen and (min-height: 915px) {
+  .registration-form {
+    height: calc(100vh - 120px);
+  }
 }
 </style>

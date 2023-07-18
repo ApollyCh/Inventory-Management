@@ -60,4 +60,21 @@ img {
   height: 75px;
 }
 
+@media only screen and (max-width: 380px) {
+  .vendor {
+    width: 340px;
+  }
+}
+
+@media only screen and (max-width: 280px) {
+  .vendor {
+    width: 260px;
+  }
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1400px) {
+  .vendor {
+    width: 320px;
+  }
+}
 </style>

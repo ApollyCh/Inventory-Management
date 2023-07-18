@@ -34,8 +34,8 @@ export default defineComponent({
 <template>
   <div>
     <top-panel name_of_page="Vendors"></top-panel>
+    <VendorsList></VendorsList>
     <bottom-panel></bottom-panel>
-    <VendorsList> </VendorsList>
 
     <div class="add-buttons">
       <button
@@ -47,12 +47,12 @@ export default defineComponent({
       >
         +
       </button>
-      <!--      <add-vendor-form v-if="showComponent"></add-vendor-form>-->
     </div>
   </div>
 </template>
 
 <style scoped>
+
 .round-button {
   position: fixed;
   width: 80px;
@@ -68,8 +68,8 @@ export default defineComponent({
   font-size: 45px;
   font-family: "Rubik", sans-serif;
   font-weight: bold;
-  top: 550px;
-  left: 93%;
+  top: calc(100vh - 140px);
+  left: calc(100vw - 85px);
 }
 
 .round-button:hover {
@@ -88,30 +88,18 @@ export default defineComponent({
   .round-button {
     width: 60px;
     height: 60px;
-    left: 80%;
-    top: 80%;
     line-height: 50px;
     z-index: 10;
-
   }
 }
 
-@media only screen and (min-width: 480px) and (max-width: 1024px){
-  VendorsList {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
+@media only screen and (min-width: 480px) and (max-width: 1024px) {
 
   .round-button {
     width: 70px;
     height: 70px;
-    left: 80%;
-    top: 77%;
     line-height: 50px;
     z-index: 10;
-
   }
 }
-
 </style>

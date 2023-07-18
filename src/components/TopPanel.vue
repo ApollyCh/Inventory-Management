@@ -54,6 +54,7 @@ p {
   background-color: #ffffff;
   height: 60px;
   border: solid 1px #bebebe;
+  z-index: 10;
 }
 
 #top-img {

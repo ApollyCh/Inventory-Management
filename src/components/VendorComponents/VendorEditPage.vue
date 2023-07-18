@@ -74,7 +74,7 @@ async function editVendor() {
     </svg>
   </button>
 
-  <div class="registration-form" v-if="show">
+  <div class="edit-form" v-if="show">
     <form @submit.prevent="editVendor">
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Name</p>
@@ -151,7 +151,7 @@ async function editVendor() {
 </template>
 
 <style scoped>
-.registration-form {
+.edit-form {
   width: 550px;
   height: max-content;
   background-color: #ffffff;
@@ -218,6 +218,7 @@ p {
   justify-content: center;
   margin: 0;
   box-shadow: 0 0 10px 0 rgb(121, 112, 112);
+  z-index: 1000;
 }
 
 .nav-item {
@@ -248,5 +249,21 @@ p {
 
 input:hover {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 720px) {
+  .edit-form {
+    width: 97vw;
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-height: 915px) {
+  .edit-form {
+    height: calc(100vh - 120px);
+  }
 }
 </style>

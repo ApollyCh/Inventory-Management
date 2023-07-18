@@ -56,6 +56,7 @@ export default defineComponent({
   methods: {
     goToVendor(vendorId: string) {
       this.$router.push(`/vendors/${vendorId}`);
+      console.log("tap");
     },
   },
 });
@@ -68,13 +69,26 @@ export default defineComponent({
   justify-content: center;
   position: relative;
   top: 60px;
+  padding-bottom: 60px;
 }
 
 @media only screen and (max-width: 890px) {
   .vendors_list {
     grid-template-columns: repeat(1, auto);
-
   }
 }
 
+@media only screen and (min-width: 780px) and (max-width: 1024px) {
+  .vendors_list {
+    grid-template-columns: repeat(2, 0.6fr);
+    padding-left: 4vw;
+  }
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1800px) {
+  .vendors_list {
+    grid-template-columns: repeat(3, 0.5fr);
+    padding-left: 4vw;
+  }
+}
 </style>
