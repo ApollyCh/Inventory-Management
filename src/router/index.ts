@@ -7,6 +7,7 @@ import VendorInfoPanel from "@/components/VendorComponents/VendorInfoPanel.vue";
 import VendorRegistrationForm from "@/components/VendorComponents/VendorRegistrationForm.vue";
 import ItemsPage from "@/views/ItemsPage.vue";
 import VendorEditPanel from "@/components/VendorComponents/VendorEditPage.vue";
+import InventoryLogPage from "@/views/InventoryLogPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,11 @@ const router = createRouter({
       name: 'item-info',
       component: ItemsPage
     },
+    {
+      path: '/log',
+      name: 'log',
+      component: InventoryLogPage
+    }
   ]
 })
 
