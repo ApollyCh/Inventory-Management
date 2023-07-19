@@ -40,10 +40,14 @@
                         date: doc.data().date,
                         time: doc.data().time,
                         countChange: doc.data().countChange,
+                        timestamp: doc.data().timestamp,
                     };
                     ils.push(il);
                 });
                 inventoryLogs.value = ils;
+                inventoryLogs.value.sort((a: any, b: any) => {
+                    return b.timestamp - a.timestamp;
+                });
             });
         },
 
