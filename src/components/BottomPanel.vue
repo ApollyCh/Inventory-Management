@@ -42,6 +42,7 @@ export default defineComponent({
   justify-content: center;
   margin: 0;
   box-shadow: 0 0 10px 0 rgb(121, 112, 112);
+  z-index: 10000;
 
 
 }

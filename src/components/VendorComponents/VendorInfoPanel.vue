@@ -10,7 +10,7 @@ import type { Vendor } from "@/lib/vendor";
 const router = useRouter();
 const route = useRoute();
 
-let show = ref(false)
+let show = ref(false);
 const vendor = ref<Vendor>();
 const r = ref<any>();
 r.value = route.params;
@@ -18,7 +18,7 @@ onMounted(async () => {
   const docRef = doc(db, "Vendors", r.value.id);
   const docSnap = await getDoc(docRef);
   vendor.value = docSnap.data() as Vendor;
-  show.value = true
+  show.value = true;
 });
 
 const deleteVendor = async () => {
@@ -87,6 +87,14 @@ const modal = ref(false);
         <p class="information">{{ vendor?.Address ?? "" }}</p>
       </div>
     </div>
+    <button
+      class="edit-button"
+      data-toggle="tooltip"
+      data-placement="right"
+      @click="toEditVendor"
+    >
+      Edit Vendor
+    </button>
     <button class="delete-button" @click="modal = !modal" v-if="!modal">
       Delete Vendor
     </button>
@@ -99,32 +107,7 @@ const modal = ref(false);
       <button class="yes-delete" @click="deleteVendor">Yes</button>
     </div>
   </div>
-  <div class="add-buttons">
-    <button
-      class="round-button"
-      data-toggle="tooltip"
-      data-placement="right"
-      title="Edit"
-      @click="toEditVendor"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="40"
-        height="40"
-        fill="currentColor"
-        class="bi bi-pencil-square"
-        viewBox="1 -1 15 16"
-      >
-        <path
-          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-        />
-        <path
-          fill-rule="evenodd"
-          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-        />
-      </svg>
-    </button>
-  </div>
+
   <top-panel name_of_page="Details"></top-panel>
 
   <bottom-panel></bottom-panel>
@@ -140,7 +123,7 @@ const modal = ref(false);
   margin-left: auto;
   margin-right: auto;
   margin-top: 62px;
-  padding-bottom: 70px;
+  padding-bottom: 140px;
 }
 
 img {
@@ -179,6 +162,7 @@ p.information {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  padding-bottom: 70px;
 }
 
 .yes-delete {
@@ -256,33 +240,52 @@ p.information {
   box-shadow: 0 4px 4px rgb(190, 151, 151);
 }
 
+.edit-button {
+  width: 90%;
+  height: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Rubik", sans-serif;
+  font-size: 20px;
+  color: #ffffff;
+  position: relative;
+  opacity: 80%;
+  background: #565ed7;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px rgb(190, 151, 151);
+  margin-bottom: 20px;
+}
+
 .delete-button:hover {
   cursor: pointer;
   box-shadow: -2px 2px 8px 4px rgb(190, 151, 151);
 }
 
-.round-button {
-  position: fixed;
-  width: 80px;
-  height: 80px;
-  line-height: 70px;
-  border: 2px solid #f5f5f5;
-  border-radius: 50%;
-  color: #f5f5f5;
-  text-align: center;
-  text-decoration: none;
-  background: #565ed7;
-  box-shadow: 0 0 3px gray;
-  font-size: 45px;
-  font-family: "Rubik", sans-serif;
-  font-weight: bold;
-  top: 550px;
-  left: 93%;
+.edit-button:hover {
+  cursor: pointer;
+  box-shadow: -2px 2px 8px 4px rgb(151, 158, 190);
+}
+@media only screen and (min-height: 800px) {
+
+  .container-of-vendor {
+    padding-bottom: 20px;
+  }
+
 }
 
-.round-button:hover {
-  background: #848cff;
-  transition: background-color 0.3s;
-  cursor: pointer;
+
+
+@media only screen and (max-width: 720px) {
+  .container-of-vendor {
+    width: 97vw;
+  }
+}
+
+@media only screen and (min-height: 700px) {
+  .container-of-vendor {
+    height: calc(100vh - 120px);
+  }
 }
 </style>
