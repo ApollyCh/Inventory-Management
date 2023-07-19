@@ -27,15 +27,17 @@
             }
         },
         methods: {
+            
             async addInventoryLog() {
                 await addDoc(collection(db, "InventoryLog"), {
                     itemId: this.itemId,
                     date: new Date().toLocaleDateString(),
                     time: new Date().toLocaleTimeString(),
+                    name: this.findItemNameByItemId(this.itemId),
                     countChange: this.countChange,
                     timestamp: Date.now(),
                 });
-
+                
                 const querySnapshot = await getDocs(collection(db, "Items"));
                 
                 querySnapshot.forEach((doc) => {
@@ -56,12 +58,22 @@
                 console.log("+");
                 this.status = true
                 if (this.status)
-                    await router.push('/log')
+                await router.push('/log')
             },
-
+            
             checkCurrentItem(){
                 console.log(this.itemId)
             },
+
+            findItemNameByItemId(itemId: string){
+                for (let i = 0; i < items.value.length; i++){
+                    if (items.value[i].itemIdFromList === itemId){
+                        return items.value[i].Name;
+                    }
+                }
+                return null;
+            },
+
             changeMinSliderValue(itemId: string){
                 for (let i = 0; i < items.value.length; i++){
                     if (items.value[i].itemIdFromList === itemId){

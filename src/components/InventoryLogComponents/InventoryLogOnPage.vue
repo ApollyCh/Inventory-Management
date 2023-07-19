@@ -4,7 +4,7 @@
 
     export default defineComponent({
       name: "InventoryLogOnPage",
-      props: ["id", "itemId", "date", "time", "countChange"],
+      props: ["id", "name", "date", "time", "countChange"],
     });
 </script>
 
@@ -12,7 +12,7 @@
   <div class="inventoryLog">
     <div class="info">
       <div> 
-        <h2>{{ itemId }}</h2>
+        <h2>{{ name }}</h2>
         <h3> {{ date }} {{ time }} </h3>
       </div>
       <div>

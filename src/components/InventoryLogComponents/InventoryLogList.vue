@@ -4,7 +4,7 @@
             v-for="inventoryLog in inventoryLogs"
             :key="inventoryLog.id"
             :id="inventoryLog.id"
-            :itemId="inventoryLog.itemId"
+            :name="inventoryLog.name"
             :date="inventoryLog.date"
             :time="inventoryLog.time"
             :countChange="inventoryLog.countChange"
@@ -36,7 +36,7 @@
                 querySnapshot.forEach((doc) => {
                     const il = {
                         id: doc.id,
-                        itemId: doc.data().itemId,
+                        name: doc.data().name,
                         date: doc.data().date,
                         time: doc.data().time,
                         countChange: doc.data().countChange,
