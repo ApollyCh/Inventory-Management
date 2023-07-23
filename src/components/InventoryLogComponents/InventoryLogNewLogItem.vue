@@ -3,7 +3,7 @@
     import TopPanel from "@/components/TopPanel.vue";
     import BottomPanel from "@/components/BottomPanel.vue";
     import InventoryLogNewLogItemList from "./InventoryLogNewLogItemList.vue";
-    import { addDoc, collection, getDocs, setDoc } from "firebase/firestore";
+    import { addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
     import db from "@/components/dataBase";
     import router from "@/router";
 
@@ -42,7 +42,7 @@
                 
                 querySnapshot.forEach((doc) => {
                     if (doc.data().itemId === this.itemId){
-                        setDoc(doc.ref, {
+                        updateDoc(doc.ref, {
                             itemId: doc.data().itemId,
                             ImageItemUrl: doc.data().ImageItemUrl,
                             Name: doc.data().Name,
@@ -92,6 +92,7 @@
                         id: doc.id,
                         itemIdFromList: doc.data().itemId,
                         Name: doc.data().Name,
+                        ImageItemUrl: doc.data().ImageItemUrl,
                         totalCount: doc.data().TotalStockAvailable,
                     };
                     ils.push(il);
@@ -103,31 +104,28 @@
 </script>
 
 <template>
-    <!-- <TopPanel></TopPanel> -->
+    <TopPanel></TopPanel>
     <div class="new-log-form">
         <form @submit.prevent="addInventoryLog">
             <div class="chosen-item">
                 <label for="itemId">Item ID</label>
-                <div class="list-select"></div>
-                    <select v-model="itemId" id="itemId">
+                    <select v-model="itemId" id="itemId" required>
                         <InventoryLogNewLogItemList
                             v-for="item in items"
                             :key="item.id"
                             :id="item.id"
                             :itemId="item.itemIdFromList"
                             :name="item.Name"
+                            :imageItemUrl="item.ImageItemUrl"
                         >
                         </InventoryLogNewLogItemList>
                     </select>
             </div>
-            
-            <!-- Check button -->
-            <!-- <button @click="checkCurrentItem">Check</button> -->
 
             <div class="count-change">
-                <label for="countChange">Count Change</label>
+                <label for="countChange">Count Change </label>
                 <span class="slider-value">{{ countChange }}</span>
-                <input @focus="changeMinSliderValue(itemId)" type="range" :min="minForSlider" max="100" v-model="countChange" id="countChange">
+                <input @focus="changeMinSliderValue(itemId)" type="range" :min="minForSlider" max="100" v-model="countChange" id="countChange" required>
             </div>
 
             <button class="button" type="submit">Add</button>
@@ -136,3 +134,117 @@
     </div>
     <BottomPanel></BottomPanel>
 </template>
+
+<style>
+    .new-log-form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10%;
+    }
+
+    .new-log-form form{
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        justify-content: space-around;
+
+
+        max-width: 90vw;
+        min-width: 35vw;
+        height: 60vh;
+        background: #FFFFFF;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+
+        padding-left: 2%;
+        padding-right: 2%;
+
+    }
+
+    .new-log-form form .chosen-item{
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .new-log-form form .chosen-item label{
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 23px;
+        color: #202124;
+
+        margin-bottom: 1%;
+    }
+
+    .new-log-form form .chosen-item select{
+        width: 100%;
+        height: 48px;
+        font-family: Rubik;
+        font-size: 20px;
+        color: #202124;
+        border-radius: 6px;
+        border: solid 1px #8F8F8F;
+    }
+
+    .new-log-form form .count-change{
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .new-log-form form .count-change label{
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 23px;
+        color: #202124;
+
+        margin-bottom: 1%;
+    }
+
+    .new-log-form form .count-change input{
+        width: 100%;
+        height: 48px;
+        font-family: Rubik;
+        font-size: 20px;
+        color: #202124;
+        border-radius: 6px;
+        border: solid 1px #8F8F8F;
+    }
+
+    .new-log-form form .count-change .slider-value{
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 23px;
+        color: #202124;
+    }
+
+    .new-log-form form .button{
+        width: 100%;
+        height: 48px;
+        background: #F2994A;
+        border-radius: 6px;
+        border: none;
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 23px;
+        color: #FFFFFF;
+    }
+
+    .new-log-form form .button:hover{
+        background: #F2994A;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    }
+    
+</style>

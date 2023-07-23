@@ -44,10 +44,14 @@
                     };
                     ils.push(il);
                 });
-                inventoryLogs.value = ils;
-                inventoryLogs.value.sort((a: any, b: any) => {
-                    return b.timestamp - a.timestamp;
+                ils.sort((a: any, b: any) => {
+                    let tmpA: number = a.timestamp;
+                    let tmpB: number = b.timestamp;
+                    console.log(tmpA - tmpB);
+                    
+                    return (tmpB - tmpA);
                 });
+                inventoryLogs.value = ils;
             });
         },
 
