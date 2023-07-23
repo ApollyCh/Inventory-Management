@@ -1,53 +1,67 @@
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
 import TopPanel from "../TopPanel.vue";
-import { addDoc, collection } from "firebase/firestore";
+import type { Item } from "@/lib/item";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import db from "@/components/dataBase";
+import { useRoute } from "vue-router";
 import router from "@/router";
 
-export default defineComponent({
-  name: "ItemRegistrationForm",
-  components: { TopPanel },
-  data() {
-    return {
-      itemId: "",
-      name: "",
-      description: "",
-      imageUrl: "",
-      vendor: "",
-      purchaseCost: null,
-      salePrice: null,
-      totalStockAvailable: null,
-      status: ref(false),
-    };
-  },
-  methods: {
-    async addItem() {
-      let image: string = this.imageUrl;
-      if (image === "")
-        image =
-          "https://ae01.alicdn.com/kf/S350c52d3415d4f41a4579cbd10d982a6B.jpg";
-      await addDoc(collection(db, "Items"), {
-        Name: this.name,
-        Description: this.description,
-        Vendor: this.vendor,
-        itemId: this.itemId,
-        PurchaseCost: this.purchaseCost,
-        SalePrice: this.salePrice,
-        TotalStockAvailable: this.totalStockAvailable,
-        ImageItemUrl: this.imageUrl,
-      });
-      console.log("+");
-      this.status = true
-      if (this.status)
-        await router.push('/items')
-    }
-  },
+const click = () => {
+  history.go(-1);
+};
+
+let name: string;
+let description: string;
+let imageUrl: string;
+let vendor: string;
+let purchaseCost: number;
+let salePrice: number;
+let itemId: string;
+
+const route = useRoute();
+const item = ref<Item>();
+const r = ref<any>();
+r.value = route.params;
+let show = ref(false);
+
+onMounted(async () => {
+  const docRef = doc(db, "Items", r.value.id);
+  const docSnap = await getDoc(docRef);
+  item.value = docSnap.data() as Item;
+
+  name = item.value.Name;
+  description = item.value.Description;
+  imageUrl = item.value.ImageItemUrl;
+  vendor = item.value.Vendor;
+  purchaseCost = item.value.PurchaseCost;
+  salePrice = item.value.PurchaseCost;
+  itemId = item.value.itemId;
+  show.value = true;
 });
+
+let status = ref(false);
+
+async function editItem() {
+  let image: string = imageUrl;
+  if (image === "")
+    image = "https://ae01.alicdn.com/kf/S350c52d3415d4f41a4579cbd10d982a6B.jpg";
+
+  await updateDoc(doc(db, "Items", r.value.id), {
+    Name: name,
+    Description: description,
+    ImageItemUrl: imageUrl,
+    Vendor: vendor,
+    PurchaseCost: purchaseCost,
+    SalePrice: salePrice,
+  });
+  status.value = true;
+  if (status.value) await router.back();
+}
 </script>
 
 <template>
-  <button class="button-left-arrow" @click="$router.back()" id="but">
+  <button class="button-left-arrow" @click="click" id="but">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="20"
@@ -63,16 +77,27 @@ export default defineComponent({
     </svg>
   </button>
 
-  <div class="registration-form">
-    <form @submit.prevent="addItem">
+  <div class="edit-form" v-if="show">
+    <form @submit.prevent="editItem">
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Item ID</p>
-        <input aria-label="Item ID" type="text" id="item-id" required v-model="itemId" />
+        <input
+          aria-label="Item ID"
+          type="text"
+          required
+          id="itemId"
+          v-model="itemId"
+        />
       </div>
 
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Name</p>
-        <input aria-label="Name" type="text" id="name" v-model="name" />
+        <input
+          aria-label="Name"
+          type="text"
+          id="name"
+          v-model="name"
+        />
       </div>
 
       <div class="input-block">
@@ -127,44 +152,18 @@ export default defineComponent({
         />
       </div>
 
-      <div class="input-block">
-        <p for="xxx_fname" class="form-label required">Total Stock Available</p>
-        <input
-          aria-label="TotalStockAvailable"
-          type="number"
-          step="1"
-          placeholder="0"
-          v-model="totalStockAvailable"
-          required
-        />
-      </div>
-
       <div class="bottom-panel" id="bottom-panel">
         <a @click="$router.back()" href="#" class="nav-item">Cancel</a>
-        <input
-          type="submit"
-          value="Save"
-          class="nav-item"
-          id="save"
-        />
+        <input type="submit" value="Save" class="nav-item" id="save" />
       </div>
-      <!-- <save-panel
-        table-name="Vendors"
-        :name="this.inputName"
-        :address="this.inputAddress"
-        :email="this.inputEmail"
-        :url="this.inputUrl"
-        :phone="this.inputPhone"
-        :status="this.status"
-      ></save-panel> -->
     </form>
   </div>
 
-  <top-panel name_of_page="Items Form" vis="visible"></top-panel>
+  <top-panel name_of_page="Edit" vis="visible"></top-panel>
 </template>
 
 <style scoped>
-.registration-form {
+.edit-form {
   width: 550px;
   height: max-content;
   background-color: #ffffff;
@@ -175,30 +174,6 @@ export default defineComponent({
   margin-top: 62px;
   justify-items: center;
   padding: 10px 19px 45px 15px;
-}
-
-input {
-  width: 100%;
-  height: 48px;
-  font-family: "Rubik", sans-serif;
-  font-size: 20px;
-  color: #202124;
-  border-radius: 6px;
-  border: solid 1px #8f8f8f;
-}
-
-select {
-  width: 100%;
-  height: 48px;
-  font-family: "Rubik", sans-serif;
-  font-size: 20px;
-  color: #202124;
-  border-radius: 6px;
-  border: solid 1px #8f8f8f;
-}
-
-select:checked {
-  border: solid 3px #464646;
 }
 
 input {
@@ -288,19 +263,18 @@ input:hover {
   cursor: pointer;
 }
 
-
 @media only screen and (max-width: 720px) {
-  .registration-form {
+  .edit-form {
     width: 97vw;
   }
 
   input {
-    width: 97%;
+    width: 100%;
   }
 }
 
 @media only screen and (min-height: 915px) {
-  .registration-form {
+  .edit-form {
     height: calc(100vh - 120px);
   }
 }
