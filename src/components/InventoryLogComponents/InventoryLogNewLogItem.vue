@@ -5,8 +5,11 @@
     import InventoryLogNewLogItemList from "./InventoryLogNewLogItemList.vue";
     import { addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
     import db from "@/components/dataBase";
-    import router from "@/router";
 
+    import { useRouter } from "vue-router";
+
+
+    const router = useRouter();
 
     export const items = ref([]) as any;
 
@@ -104,34 +107,38 @@
 </script>
 
 <template>
-    <TopPanel></TopPanel>
+    <TopPanel name_of_page="Add new log"></TopPanel>
     <div class="new-log-form">
         <form @submit.prevent="addInventoryLog">
             <div class="chosen-item">
                 <label for="itemId">Item ID</label>
-                    <select v-model="itemId" id="itemId" required>
-                        <InventoryLogNewLogItemList
-                            v-for="item in items"
-                            :key="item.id"
-                            :id="item.id"
-                            :itemId="item.itemIdFromList"
-                            :name="item.Name"
-                            :imageItemUrl="item.ImageItemUrl"
-                        >
-                        </InventoryLogNewLogItemList>
-                    </select>
+                <select v-model="itemId" id="itemId" required>
+                    <InventoryLogNewLogItemList
+                    v-for="item in items"
+                    :key="item.id"
+                    :id="item.id"
+                    :itemId="item.itemIdFromList"
+                    :name="item.Name"
+                    :imageItemUrl="item.ImageItemUrl"
+                    >
+                    </InventoryLogNewLogItemList>
+                </select>
             </div>
-
+            
             <div class="count-change">
                 <label for="countChange">Count Change </label>
                 <span class="slider-value">{{ countChange }}</span>
                 <input @focus="changeMinSliderValue(itemId)" type="range" :min="minForSlider" max="100" v-model="countChange" id="countChange" required>
             </div>
-
-            <button class="button" type="submit">Add</button>
-
+            
+            <div class="buttons">
+                <button class="submitButton" type="submit">Add</button>
+                <button class="cancelButton" type="button" @click="$router.back">Cancel</button>
+            </div>
+            
         </form>
     </div>
+
     <BottomPanel></BottomPanel>
 </template>
 
@@ -228,7 +235,13 @@
         color: #202124;
     }
 
-    .new-log-form form .button{
+    .new-log-form form .buttons{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .new-log-form form .submitButton{
         width: 100%;
         height: 48px;
         background: #F2994A;
@@ -240,10 +253,33 @@
         font-size: 20px;
         line-height: 23px;
         color: #FFFFFF;
+        transition: all 0.3s ease-in-out;
     }
 
-    .new-log-form form .button:hover{
+    .new-log-form form .submitButton:hover{
         background: #F2994A;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .new-log-form form .cancelButton{
+        width: 100%;
+        height: 48px;
+        background: #FFFFFF;
+        border-radius: 6px;
+        border: 1px solid #8F8F8F;
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 23px;
+        color: #202124;
+        transition: all 0.3s ease-in-out;
+
+        margin-top: 2px;
+    }
+
+    .new-log-form form .cancelButton:hover{
+        background: #FFFFFF;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     }
     

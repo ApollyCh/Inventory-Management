@@ -8,8 +8,8 @@
             :date="inventoryLog.date"
             :time="inventoryLog.time"
             :countChange="inventoryLog.countChange"
+            :imageItemUrl="inventoryLog.imageItemUrl"
             >
-
         </InventoryLogOnPage>
     </div>
 </template>
@@ -39,6 +39,7 @@
                         name: doc.data().name,
                         date: doc.data().date,
                         time: doc.data().time,
+                        itemId: doc.data().itemId,
                         countChange: doc.data().countChange,
                         timestamp: doc.data().timestamp,
                     };
@@ -47,11 +48,30 @@
                 ils.sort((a: any, b: any) => {
                     let tmpA: number = a.timestamp;
                     let tmpB: number = b.timestamp;
-                    console.log(tmpA - tmpB);
-                    
                     return (tmpB - tmpA);
                 });
                 inventoryLogs.value = ils;
+
+                const querySnapshot2 = await getDocs(collection(db, "Items"));
+                let items = [] as any;
+                querySnapshot2.forEach((doc) => {
+                    const item = {
+                        id: doc.id,
+                        itemId: doc.data().itemId,
+                        ImageItemUrl: doc.data().ImageItemUrl,
+                    };
+                    items.push(item);
+                });
+
+                for (let i = 0; i < inventoryLogs.value.length; i++) {
+                    for (let j = 0; j < items.length; j++) {
+                        if (inventoryLogs.value[i].itemId === items[j].itemId) {
+                            inventoryLogs.value[i].imageItemUrl = items[j].ImageItemUrl;
+                        }
+                    }
+                }
+
+                console.log(inventoryLogs.value);
             });
         },
 

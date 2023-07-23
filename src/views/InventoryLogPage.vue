@@ -32,8 +32,8 @@
 </script>
 
 <template>
-    <!-- <TopPanel></TopPanel> -->
-    <InventoryLogList></InventoryLogList>
+    <TopPanel name_of_page="Log"></TopPanel>
+    <InventoryLogList class="list"></InventoryLogList>
     
     <div class="add-buttons">
         <button
@@ -46,10 +46,15 @@
         +
         </button>
     </div>
-<BottomPanel></BottomPanel>
+    <BottomPanel></BottomPanel>
 </template>
 
 <style>
+.list {
+    margin-top: 3.9rem;
+    margin-bottom: 3rem;
+}
+
 .round-button {
     position: fixed;
     width: 80px;
