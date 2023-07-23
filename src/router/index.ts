@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AboutMainPage from "@/pages/AboutMainPage.vue";
+import AboutMainPage from "@/views/AboutMainPage.vue";
 import App from "@/App.vue";
 
-import VendorsPage from "@/pages/VendorsPage.vue";
+import VendorsPage from "@/views/VendorsPage.vue";
 import VendorInfoPanel from "@/components/VendorComponents/VendorInfoPanel.vue";
 import VendorRegistrationForm from "@/components/VendorComponents/VendorRegistrationForm.vue";
-import ItemsPage from "@/pages/ItemsPage.vue";
+import ItemsPage from "@/views/ItemsPage.vue";
 import VendorEditPanel from "@/components/VendorComponents/VendorEditPage.vue";
-import InventoryLogPage from "@/pages/InventoryLogPage.vue";
+import InventoryLogPage from "@/views/InventoryLogPage.vue";
 import InventoryLogNewLogItem from '@/components/InventoryLogComponents/InventoryLogNewLogItem.vue';
 
 const router = createRouter({

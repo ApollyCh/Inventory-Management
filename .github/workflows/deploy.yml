@@ -28,6 +28,6 @@ jobs:
 #       - name: Check
 #         run: npm run check
       - name: Deploy to GitHub Page
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-views-deploy-action@v4
         with:
           folder: .
