@@ -20,7 +20,7 @@ let inputLogo: string;
 
 const route = useRoute();
 const vendor = ref<Vendor>();
-const r = ref<any>();
+const r = ref<object>();
 r.value = route.params;
 let show = ref(false);
 onMounted(async () => {
@@ -172,6 +172,7 @@ input {
   color: #202124;
   border-radius: 6px;
   border: solid 1px #8f8f8f;
+  margin-right: 20px;
 }
 
 p {
@@ -257,7 +258,7 @@ input:hover {
   }
 
   input {
-    width: 100%;
+    width: 95%;
   }
 }
 

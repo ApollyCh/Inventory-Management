@@ -43,10 +43,8 @@ button {
   color: #ffffff;
   border-radius: 10px;
   position: relative;
-  top: 40vh;
   display: block;
-  margin-right: auto;
-  margin-left: auto;
+  margin: calc(50vh - 120px) auto 10px;
 }
 
 button:hover {

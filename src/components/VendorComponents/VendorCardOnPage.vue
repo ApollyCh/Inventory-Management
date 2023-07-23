@@ -27,7 +27,7 @@ export default defineComponent({
 }
 
 .vendor:hover {
-  box-shadow: 0px 6px 6px rgb(143, 143, 143);
+  box-shadow: 0 6px 6px rgb(143, 143, 143);
   cursor: pointer;
   transition: box-shadow 0.3s;
 }
@@ -50,6 +50,7 @@ h3 {
 }
 
 .info {
+  display: block;
   position: relative;
   margin-top: -75px;
   margin-left: 90px;
