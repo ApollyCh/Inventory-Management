@@ -107,7 +107,7 @@
     <div class="new-log-form">
         <form @submit.prevent="addInventoryLog">
             <div class="chosen-item">
-                <label for="itemId">Item ID</label>
+                <label for="itemId">Item name</label>
                 <select v-model="itemId" id="itemId" required>
                     <InventoryLogNewLogItemList
                     v-for="item in items"
