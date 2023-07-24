@@ -66,7 +66,7 @@ export default defineComponent({
   position: relative;
   top: 60px;
   padding-bottom: 60px;
-}
+} 
 
 @media only screen and (max-width: 890px) {
   .items_list {
