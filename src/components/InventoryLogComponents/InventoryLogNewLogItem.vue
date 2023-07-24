@@ -110,7 +110,7 @@
 <template>
     <TopPanel name_of_page="Add new log"></TopPanel>
     <div class="new-log-form">
-        <form>
+        <form @submit.prevent="addInventoryLog">
             <div class="chosen-item">
                 <label for="itemId">Item ID</label>
                 <select v-model="itemId" id="itemId" required>
@@ -132,11 +132,11 @@
                 <input @focus="changeMinSliderValue(itemId)" type="range" :min="minForSlider" max="100" v-model="countChange" id="countChange" required>
             </div>
             
-            <button class="submitButton" @click="addInventoryLog">Add</button>
-            <button class="cancelButton" @click="$router.back">Cancel</button>
-
+            <button class="submitButton" type="submit">Add</button>
+            
             
         </form>
+        <button class="cancelButton" @click="$router.back">Cancel</button>
     </div>
 
     <BottomPanel></BottomPanel>
@@ -196,6 +196,12 @@
         color: #202124;
         border-radius: 6px;
         border: solid 1px #8F8F8F;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .new-log-form form .chosen-item select:hover{
+        border: solid 1px #f2984a8c;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     }
 
     .new-log-form form .count-change{
@@ -224,6 +230,12 @@
         color: #202124;
         border-radius: 6px;
         border: solid 1px #8F8F8F;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .new-log-form form .count-change input:hover{
+        border: solid 1px #f2984a8c;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     }
 
     .new-log-form form .count-change .slider-value{
@@ -261,12 +273,15 @@
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     }
 
-    .new-log-form form .cancelButton{
-        width: 100%;
+    .new-log-form .cancelButton{
+        max-width: 90vw;
+        min-width: 35vw;
         height: 48px;
         background: #FFFFFF;
         border-radius: 6px;
-        border: 1px solid #8F8F8F;
+        border-left: 1px solid #8F8F8F;
+        border-right: 1px solid #8F8F8F;
+        border-bottom: 1px solid #8F8F8F;
         font-family: Rubik;
         font-style: normal;
         font-weight: normal;
@@ -274,13 +289,12 @@
         line-height: 23px;
         color: #202124;
         transition: all 0.3s ease-in-out;
-
-        margin-top: 2px;
+        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
     }
 
-    .new-log-form form .cancelButton:hover{
+    .new-log-form .cancelButton:hover{
         background: #FFFFFF;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
     }
     
 </style>
