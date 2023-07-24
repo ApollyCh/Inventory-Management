@@ -5,12 +5,12 @@
     import InventoryLogNewLogItemList from "./InventoryLogNewLogItemList.vue";
     import { addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
     import db from "@/components/dataBase";
-    
+    import router from "@/router";
 
     import { useRouter } from "vue-router";
 
 
-    const router = useRouter();
+    const buttonRouter = useRouter();
 
     export const items = ref([]) as any;
 
@@ -62,7 +62,7 @@
                 console.log("+");
                 this.status = true
                 if (this.status)
-                    await router.push({path: "/log"})
+                    await router.push('/log')
             },
             
             checkCurrentItem(){
@@ -132,10 +132,9 @@
                 <input @focus="changeMinSliderValue(itemId)" type="range" :min="minForSlider" max="100" v-model="countChange" id="countChange" required>
             </div>
             
-            <div class="buttons">
-                <button class="submitButton" @click="addInventoryLog">Add</button>
-                <button class="cancelButton" @click="$router.back">Cancel</button>
-            </div>
+            <button class="submitButton" @click="addInventoryLog">Add</button>
+            <button class="cancelButton" @click="$router.back">Cancel</button>
+
             
         </form>
     </div>
