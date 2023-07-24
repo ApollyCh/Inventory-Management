@@ -14,29 +14,43 @@ export default defineComponent({
     ItemsList,
     TopPanel,
     BottomPanel
+  },
+  data() {
+    return {
+      showComponent: false
+    }
+  },
+  setup() {
+    const router = useRouter()
+    const click = () => {
+      router.push({
+        path: '/items/add'
+      })
+    }
+    return {
+      click
+    }
   }
-});
+})
 </script>
 
 <template>
   <div>
-<!--    <TopPanel name_of_page="Items"></TopPanel>-->
-<!--    <BottomPanel></BottomPanel>-->
-<!--    <ItemsList></ItemsList>-->
-    <ItemRegistrationForm></ItemRegistrationForm>
+   <TopPanel name_of_page="Items"></TopPanel>
+   <BottomPanel></BottomPanel>
+   <ItemsList></ItemsList>
+<!-- <ItemRegistrationForm></ItemRegistrationForm> -->
 
     <div class="add-buttons">
-      <button class="round-button" data-toggle="tooltip" data-placement="right" title="Add"
-      >+
+      <button class="round-button" data-toggle="tooltip" data-placement="right" title="Add" 
+          @click="click">+
       </button>
+      <add-item-form v-if="showComponent"></add-item-form>
     </div>
   </div>
 </template>
 
 <style scoped>
-ItemCardOnPage {
-  position: relative;
-}
 
 
 .round-button {
@@ -57,5 +71,36 @@ ItemCardOnPage {
   top: 510px;
   left: 93%;
 
+}
+
+.round-button:hover {
+  background: #848cff;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 480px) {
+  ItemsList {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .round-button {
+    width: 60px;
+    height: 60px;
+    line-height: 50px;
+    z-index: 10;
+  }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 1024px) {
+
+  .round-button {
+    width: 70px;
+    height: 70px;
+    line-height: 50px;
+    z-index: 10;
+  }
 }
 </style>

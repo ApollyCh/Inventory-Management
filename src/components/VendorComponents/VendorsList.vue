@@ -18,6 +18,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import { collection, getDocs } from "firebase/firestore";
 import VendorCardOnPage from "../VendorComponents/VendorCardOnPage.vue";
 import db from "../dataBase";
+import type { Vendor } from "@/lib/vendor";
 
 export const vendors = ref([]) as any;
 export default defineComponent({
@@ -28,7 +29,7 @@ export default defineComponent({
   setup() {
     onMounted(async () => {
       const querySnapshot = await getDocs(collection(db, "Vendors"));
-      let vs = [] as any;
+      let vs = [] as Vendor;
       querySnapshot.forEach((doc) => {
         const v = {
           id: doc.id,
@@ -37,7 +38,6 @@ export default defineComponent({
           phone: doc.data().Phone,
           url: doc.data().URL,
           email: doc.data().Email,
-          numOfItems: doc.data().NumOfItems,
           logo: doc.data().LogoPath,
         };
         vs.push(v);

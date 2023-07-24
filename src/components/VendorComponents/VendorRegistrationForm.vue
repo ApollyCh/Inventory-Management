@@ -165,6 +165,7 @@ input {
   color: #202124;
   border-radius: 6px;
   border: solid 1px #8f8f8f;
+  margin-right: 20px;
 }
 
 p {
@@ -251,7 +252,7 @@ input:hover {
   }
 
   input {
-    width: 97%;
+    width: 95%;
   }
 }
 

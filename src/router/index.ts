@@ -6,6 +6,9 @@ import VendorsPage from "@/views/VendorsPage.vue";
 import VendorInfoPanel from "@/components/VendorComponents/VendorInfoPanel.vue";
 import VendorRegistrationForm from "@/components/VendorComponents/VendorRegistrationForm.vue";
 import ItemsPage from "@/views/ItemsPage.vue";
+import ItemRegistrationForm from "@/components/ItemComponents/ItemRegistrationForm.vue";
+import ItemInfoPanel from '@/components/ItemComponents/ItemInfoPanel.vue';
+import ItemEditPage from "@/components/ItemComponents/ItemEditPage.vue";
 import VendorEditPanel from "@/components/VendorComponents/VendorEditPage.vue";
 import InventoryLogPage from "@/views/InventoryLogPage.vue";
 import InventoryLogNewLogItem from '@/components/InventoryLogComponents/InventoryLogNewLogItem.vue';
@@ -49,9 +52,19 @@ const router = createRouter({
       component: ItemsPage
     },
     {
+      path: '/items/add',
+      name: 'add-item',
+      component: ItemRegistrationForm
+    },
+    {
       path: `/items/:id`,
       name: 'item-info',
-      component: ItemsPage
+      component: ItemInfoPanel
+    },
+    {
+      path: '/items/:id/edit',
+      name: 'item-edit',
+      component: ItemEditPage
     },
     {
       path: '/log',

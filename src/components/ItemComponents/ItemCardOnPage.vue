@@ -9,10 +9,10 @@ export default defineComponent({
 
 <template>
   <div class="item">
-    <img :src="this.image"  alt="item-icon"/>
+    <img :src="image"  alt="item-icon"/>
     <div class="info">
-      <h2>{{ this.name }}</h2>
-      <h3>{{ this.description }}</h3>
+      <h2>{{ name }}</h2>
+      <h3>{{ description }}</h3>
     </div>
   </div>
 </template>
@@ -20,12 +20,11 @@ export default defineComponent({
 <style scoped>
 .item {
   background-color: rgb(254, 254, 254);
-  width: 340px;
+  width: 310px;
   height: 82px;
   margin-top: 80px;
   border: solid 1px #dbdbdb;
-  margin-left: 30px;
-
+  /* margin-left: 30px; */
 }
 
 .item:hover {
@@ -39,7 +38,7 @@ h2 {
   font-size: 16px;
   color: #202124;
   position: relative;
-  margin-left: 0;
+  margin-left: 0px;
 }
 
 h3 {
@@ -48,10 +47,11 @@ h3 {
   position: relative;
   color: #202124;
   opacity: 80%;
-  margin-left: 0;
+  margin-left: 0px;
 }
 
 .info {
+  display: block;
   position: relative;
   margin-top: -75px;
   margin-left: 95px;

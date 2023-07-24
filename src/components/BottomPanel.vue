@@ -21,7 +21,7 @@ export default defineComponent({
 
 <template>
   <div class="bottom-panel" id="bottom-panel">
-    <a href="#" class="nav-item" @click="toItems">Items</a>
+    <a href="/items" class="nav-item" @click="toItems">Items</a>
     <a href="/log" class="nav-item">Inventory Log</a>
     <a href="/vendors" class="nav-item">Vendors</a>
   </div>
