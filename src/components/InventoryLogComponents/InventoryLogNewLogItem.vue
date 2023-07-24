@@ -7,11 +7,6 @@
     import db from "@/components/dataBase";
     import router from "@/router";
 
-    import { useRouter } from "vue-router";
-
-
-    const buttonRouter = useRouter();
-
     export const items = ref([]) as any;
 
     export default defineComponent( {

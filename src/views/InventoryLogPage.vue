@@ -75,16 +75,18 @@ export default defineComponent({
   text-align: center;
   font-size: 40px;
   color: #fff;
-  background: #000;
+  background: #565ed7;
   box-shadow: 0 0 3px gray;
-  bottom: 40px;
-  right: 40px;
+  /* bottom: 40px;
+  right: 40px; */
   cursor: pointer;
   transition: 0.3s;
+  top: calc(100vh - 140px);
+  left: calc(100vw - 85px);
 }
 
 .round-button:hover {
-  background: #565ed7;
+  background: #848cff;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
