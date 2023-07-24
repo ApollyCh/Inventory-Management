@@ -77,8 +77,6 @@ export default defineComponent({
   color: #fff;
   background: #565ed7;
   box-shadow: 0 0 3px gray;
-  /* bottom: 40px;
-  right: 40px; */
   cursor: pointer;
   transition: 0.3s;
   top: calc(100vh - 140px);

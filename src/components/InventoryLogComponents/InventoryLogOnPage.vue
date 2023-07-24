@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 
 .inventoryLog {
   display: flex;
@@ -82,7 +82,4 @@ h3 {
   opacity: 80%;
   margin-left: 0;
 }
-
-
-
 </style>
