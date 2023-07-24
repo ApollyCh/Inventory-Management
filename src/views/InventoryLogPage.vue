@@ -80,7 +80,7 @@ export default defineComponent({
   cursor: pointer;
   transition: 0.3s;
   top: calc(100vh - 140px);
-  left: calc(100vw - 85px);
+  left: calc(100vw - 100px);
 }
 
 .round-button:hover {
