@@ -1,12 +1,13 @@
 <script lang="ts">
-import VendorsList from "@/components/VendorComponents/VendorsList.vue";
-import { defineComponent } from "vue";
-import TopPanel from "@/components/TopPanel.vue";
-import BottomPanel from "@/components/BottomPanel.vue";
-import { useRouter } from "vue-router";
+import VendorsList from '@/components/VendorComponents/VendorsList.vue'
+import { defineComponent } from 'vue'
+import TopPanel from '@/components/TopPanel.vue'
+import BottomPanel from '@/components/BottomPanel.vue'
+import { useRouter } from 'vue-router'
+import { useHead } from '@vueuse/head'
 
 export default defineComponent({
-  name: "VendorsPage",
+  name: 'VendorsPage',
   components: {
     VendorsList,
     TopPanel,
@@ -15,23 +16,28 @@ export default defineComponent({
   data() {
     return {
       showComponent: false,
-    };
+    }
   },
   setup() {
-    const router = useRouter();
+    useHead({
+      title: 'Vendors',
+      meta: [{ name: 'description', content: 'Storage all vendors' }],
+    })
+    const router = useRouter()
     const click = () => {
       router.push({
-        path: "/vendors/add",
-      });
-    };
+        path: '/vendors/add',
+      })
+    }
     return {
       click,
-    };
+    }
   },
-});
+})
 </script>
 
 <template>
+  <meta name="description" content="Storage all vendors" />
   <div>
     <top-panel name_of_page="Vendors"></top-panel>
     <VendorsList></VendorsList>
@@ -52,7 +58,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-
 .round-button {
   position: fixed;
   width: 80px;
@@ -66,7 +71,7 @@ export default defineComponent({
   background: #565ed7;
   box-shadow: 0 0 3px gray;
   font-size: 45px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: bold;
   top: calc(100vh - 140px);
   left: calc(100vw - 85px);
@@ -94,7 +99,6 @@ export default defineComponent({
 }
 
 @media only screen and (min-width: 480px) and (max-width: 1024px) {
-
   .round-button {
     width: 70px;
     height: 70px;

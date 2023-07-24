@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    name: Build and Deploy to GH Pages
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,13 +21,9 @@ jobs:
           node-version: '16'
       - name: Install dependencies
         run: npm ci
-      - name: Build website
+      - name: Build
         run: npm run build
-#       - name: Lint
-#         run: npm run lint
-#       - name: Check
-#         run: npm run check
-      - name: Deploy to GitHub Page
-        uses: JamesIves/github-views-deploy-action@v4
-        with:
-          folder: .
+      - name: Linting
+        run: npm run list
+      - name: Checking
+        run: npm run check

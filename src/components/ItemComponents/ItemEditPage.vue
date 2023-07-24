@@ -1,62 +1,84 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import TopPanel from "../TopPanel.vue";
-import type { Item } from "@/lib/item";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import db from "@/components/dataBase";
-import { useRoute } from "vue-router";
-import router from "@/router";
+import { onMounted, ref } from 'vue'
+import TopPanel from '../TopPanel.vue'
+import type { Item } from '@/lib/item'
+import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore'
+import db from '@/components/dataBase'
+import { useRoute } from 'vue-router'
+import router from '@/router'
+import ItemsChooseVendorList from '@/components/ItemComponents/ItemsChooseVendorList.vue'
+import type { Vendor } from '@/lib/vendor'
 
 const click = () => {
-  history.go(-1);
-};
+  history.go(-1)
+}
 
-let name: string;
-let description: string;
-let imageUrl: string;
-let vendor: string;
-let purchaseCost: number;
-let salePrice: number;
-let itemId: string;
+let name: string
+let description: string
+let imageUrl: string
+let itemVendor: string
+let purchaseCost: number
+let salePrice: number
+let itemId: string
 
-const route = useRoute();
-const item = ref<Item>();
-const r = ref<any>();
-r.value = route.params;
-let show = ref(false);
+const route = useRoute()
+const item = ref<Item>()
+const r = ref<any>()
+r.value = route.params
+let show = ref(false)
 
 onMounted(async () => {
-  const docRef = doc(db, "Items", r.value.id);
-  const docSnap = await getDoc(docRef);
-  item.value = docSnap.data() as Item;
+  const docRef = doc(db, 'Items', r.value.id)
+  const docSnap = await getDoc(docRef)
+  item.value = docSnap.data() as Item
 
-  name = item.value.Name;
-  description = item.value.Description;
-  imageUrl = item.value.ImageItemUrl;
-  vendor = item.value.Vendor;
-  purchaseCost = item.value.PurchaseCost;
-  salePrice = item.value.PurchaseCost;
-  itemId = item.value.itemId;
-  show.value = true;
-});
+  name = item.value.Name
+  description = item.value.Description
+  imageUrl = item.value.ImageItemUrl
+  itemVendor = item.value.Vendor
+  purchaseCost = item.value.PurchaseCost
+  salePrice = item.value.PurchaseCost
+  itemId = item.value.itemId
+  show.value = true
+})
 
-let status = ref(false);
+let status = ref(false)
+
+const vendors = ref<Vendor[]>([])
+
+onMounted(async () => {
+  const querySnapshot = await getDocs(collection(db, 'Vendors'))
+  const vs = ref<Vendor[]>([])
+  querySnapshot.forEach((doc) => {
+    const v = {
+      id: doc.id,
+      Address: doc.data().Address,
+      Email: doc.data().Email,
+      Name: doc.data().Name,
+      Phone: doc.data().Phone,
+      URL: doc.data().URL,
+      LogoPath: doc.data().LogoPath,
+    }
+    vs.value.push(v)
+  })
+  vendors.value = vs.value
+})
 
 async function editItem() {
-  let image: string = imageUrl;
-  if (image === "")
-    image = "https://ae01.alicdn.com/kf/S350c52d3415d4f41a4579cbd10d982a6B.jpg";
+  let image: string = imageUrl
+  if (image === '')
+    image = 'https://ae01.alicdn.com/kf/S350c52d3415d4f41a4579cbd10d982a6B.jpg'
 
-  await updateDoc(doc(db, "Items", r.value.id), {
+  await updateDoc(doc(db, 'Items', r.value.id), {
     Name: name,
     Description: description,
     ImageItemUrl: imageUrl,
-    Vendor: vendor,
+    Vendor: itemVendor,
     PurchaseCost: purchaseCost,
     SalePrice: salePrice,
-  });
-  status.value = true;
-  if (status.value) await router.back();
+  })
+  status.value = true
+  if (status.value) await router.back()
 }
 </script>
 
@@ -92,12 +114,7 @@ async function editItem() {
 
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Name</p>
-        <input
-          aria-label="Name"
-          type="text"
-          id="name"
-          v-model="name"
-        />
+        <input aria-label="Name" type="text" id="name" v-model="name" />
       </div>
 
       <div class="input-block">
@@ -111,20 +128,24 @@ async function editItem() {
       </div>
 
       <div class="input-block">
-        <p for="xxx_fname" class="form-label required">Path to Image</p>
+        <p>Path to Image</p>
         <input
           aria-label="ImageUrl"
           type="url"
           placeholder="https://"
           v-model="imageUrl"
-          required
         />
       </div>
 
       <div class="input-block">
         <p>Vendor</p>
-        <select v-model="vendor">
-          <option value="1">Company 1</option>
+        <select v-model="itemVendor">
+          <ItemsChooseVendorList
+            v-for="vendor in vendors"
+            :key="vendor.id"
+            :name="vendor.Name"
+          >
+          </ItemsChooseVendorList>
         </select>
       </div>
 
@@ -179,7 +200,7 @@ async function editItem() {
 input {
   width: 100%;
   height: 48px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #202124;
   border-radius: 6px;
@@ -187,7 +208,7 @@ input {
 }
 
 p {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 18px;
   color: #202124;
   position: relative;
@@ -196,6 +217,20 @@ p {
 
 .input-block {
   padding-bottom: 20px;
+}
+
+select {
+  width: 100%;
+  height: 48px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 20px;
+  color: #202124;
+  border-radius: 6px;
+  border: solid 1px #8f8f8f;
+}
+
+select:checked {
+  border: solid 3px #464646;
 }
 
 .button-left-arrow {
@@ -213,7 +248,7 @@ p {
 }
 
 .required:after {
-  content: " *";
+  content: ' *';
   color: red;
   font-weight: 100;
 }
@@ -234,7 +269,7 @@ p {
 }
 
 .nav-item {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   flex: 1 1 auto;
   /* margin: 0 80px; */
   padding: 15px;

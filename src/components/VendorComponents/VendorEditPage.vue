@@ -1,59 +1,59 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import TopPanel from "../TopPanel.vue";
-import type { Vendor } from "@/lib/vendor";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import db from "@/components/dataBase";
-import { useRoute } from "vue-router";
-import router from "@/router";
+import { onMounted, ref } from 'vue'
+import TopPanel from '../TopPanel.vue'
+import type { Vendor } from '@/lib/vendor'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import db from '@/components/dataBase'
+import { useRoute } from 'vue-router'
+import router from '@/router'
 
 const click = () => {
-  history.go(-1);
-};
+  history.go(-1)
+}
 
-let inputName: string;
-let inputPhone: string;
-let inputEmail: string;
-let inputUrl: string;
-let inputAddress: string;
-let inputLogo: string;
+let inputName: string
+let inputPhone: string
+let inputEmail: string
+let inputUrl: string
+let inputAddress: string
+let inputLogo: string
 
-const route = useRoute();
-const vendor = ref<Vendor>();
-const r = ref<object>();
-r.value = route.params;
-let show = ref(false);
+const route = useRoute()
+const vendor = ref<Vendor>()
+const r = ref<object>()
+r.value = route.params
+let show = ref(false)
 onMounted(async () => {
-  const docRef = doc(db, "Vendors", r.value.id);
-  const docSnap = await getDoc(docRef);
-  vendor.value = docSnap.data() as Vendor;
-  inputName = vendor.value.Name;
-  inputPhone = vendor.value.Phone;
-  inputEmail = vendor.value.Email;
-  inputUrl = vendor.value.URL;
-  inputAddress = vendor.value.Address;
-  inputLogo = vendor.value.LogoPath;
-  show.value = true;
-});
+  const docRef = doc(db, 'Vendors', r.value.id)
+  const docSnap = await getDoc(docRef)
+  vendor.value = docSnap.data() as Vendor
+  inputName = vendor.value.Name
+  inputPhone = vendor.value.Phone
+  inputEmail = vendor.value.Email
+  inputUrl = vendor.value.URL
+  inputAddress = vendor.value.Address
+  inputLogo = vendor.value.LogoPath
+  show.value = true
+})
 
-let status = ref(false);
+let status = ref(false)
 
 async function editVendor() {
-  let logo: string = inputLogo;
-  if (logo === "")
+  let logo: string = inputLogo
+  if (logo === '')
     logo =
-      "https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600";
+      'https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600'
 
-  await updateDoc(doc(db, "Vendors", r.value.id), {
+  await updateDoc(doc(db, 'Vendors', r.value.id), {
     Name: inputName,
     Phone: inputPhone,
     Address: inputAddress,
     URL: inputUrl,
     Email: inputEmail,
     LogoPath: logo,
-  });
-  status.value = true;
-  if (status.value) await router.back();
+  })
+  status.value = true
+  if (status.value) await router.back()
 }
 </script>
 
@@ -167,7 +167,7 @@ async function editVendor() {
 input {
   width: 100%;
   height: 48px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #202124;
   border-radius: 6px;
@@ -176,7 +176,7 @@ input {
 }
 
 p {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 18px;
   color: #202124;
   position: relative;
@@ -202,7 +202,7 @@ p {
 }
 
 .required:after {
-  content: " *";
+  content: ' *';
   color: red;
   font-weight: 100;
 }
@@ -223,7 +223,7 @@ p {
 }
 
 .nav-item {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   flex: 1 1 auto;
   /* margin: 0 80px; */
   padding: 15px;

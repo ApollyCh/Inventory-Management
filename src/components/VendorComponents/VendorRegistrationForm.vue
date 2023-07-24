@@ -1,47 +1,45 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import TopPanel from "../TopPanel.vue";
-import { addDoc, collection } from "firebase/firestore";
-import db from "@/components/dataBase";
-import router from "@/router";
-
+import { defineComponent, ref } from 'vue'
+import TopPanel from '../TopPanel.vue'
+import { addDoc, collection } from 'firebase/firestore'
+import db from '@/components/dataBase'
+import router from '@/router'
 
 export default defineComponent({
-  name: "VendorRegistrationForm",
+  name: 'VendorRegistrationForm',
   components: { TopPanel },
 
   data() {
     return {
-      inputName: "",
-      inputPhone: "",
-      inputEmail: "",
-      inputUrl: "",
-      inputAddress: "",
-      inputLogo: "",
-      status: ref(false)
-    };
+      inputName: '',
+      inputPhone: '',
+      inputEmail: '',
+      inputUrl: '',
+      inputAddress: '',
+      inputLogo: '',
+      status: ref(false),
+    }
   },
   methods: {
     async addVendor() {
-      let logo: string = this.inputLogo;
-      if (logo === "")
+      let logo: string = this.inputLogo
+      if (logo === '')
         logo =
-          "https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600";
-      await addDoc(collection(db, "Vendors"), {
+          'https://www.appsheet.com/image/getremoteimageurl?url=https%3A%2F%2Ffonts.gstatic.com%2Fs%2Fi%2Fgooglematerialicons%2Fapartment%2Fv5%2Fgm_grey-48dp%2F2x%2Fgm_apartment_gm_grey_48dp.png&width=600'
+      await addDoc(collection(db, 'Vendors'), {
         Name: this.inputName,
         Phone: this.inputPhone,
         Address: this.inputAddress,
         URL: this.inputUrl,
         Email: this.inputEmail,
         LogoPath: logo,
-      });
-      console.log("+");
+      })
+      console.log('+')
       this.status = true
-      if (this.status)
-        await router.push('/vendors')
-    }
+      if (this.status) await router.push('/vendors')
+    },
   },
-});
+})
 </script>
 
 <template>
@@ -88,7 +86,7 @@ export default defineComponent({
       <div class="input-block">
         <p>URL</p>
         <input
-          aria-label="Name"
+          aria-label="url"
           type="url"
           placeholder="https://"
           id="url"
@@ -99,10 +97,12 @@ export default defineComponent({
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Phone</p>
         <input
-          aria-label="Name"
+          aria-label="phone"
           type="tel"
           required
           id="phone"
+          pattern="\+[0-9]{10,}"
+          placeholder="+..."
           v-model="inputPhone"
         />
       </div>
@@ -130,12 +130,7 @@ export default defineComponent({
 
       <div class="bottom-panel" id="bottom-panel">
         <a @click="$router.back()" href="#" class="nav-item">Cancel</a>
-        <input
-          type="submit"
-          value="Save"
-          class="nav-item"
-          id="save"
-        />
+        <input type="submit" value="Save" class="nav-item" id="save" />
       </div>
     </form>
   </div>
@@ -160,7 +155,7 @@ export default defineComponent({
 input {
   width: 100%;
   height: 48px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #202124;
   border-radius: 6px;
@@ -169,7 +164,7 @@ input {
 }
 
 p {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 18px;
   color: #202124;
   position: relative;
@@ -195,7 +190,7 @@ p {
 }
 
 .required:after {
-  content: " *";
+  content: ' *';
   color: red;
   font-weight: 100;
 }
@@ -216,7 +211,7 @@ p {
 }
 
 .nav-item {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   flex: 1 1 auto;
   /* margin: 0 80px; */
   padding: 15px;
@@ -239,12 +234,12 @@ p {
   color: #565ed7;
   font-weight: bolder;
   font-size: 17px;
+  border-radius: 0;
 }
 
 input:hover {
   cursor: pointer;
 }
-
 
 @media only screen and (max-width: 720px) {
   .registration-form {

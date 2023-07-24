@@ -1,49 +1,76 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import TopPanel from "../TopPanel.vue";
-import { addDoc, collection } from "firebase/firestore";
-import db from "@/components/dataBase";
-import router from "@/router";
+import { defineComponent, onMounted, ref } from 'vue'
+import TopPanel from '../TopPanel.vue'
+import { addDoc, collection, getDocs } from 'firebase/firestore'
+import db from '@/components/dataBase'
+import router from '@/router'
+import ItemsChooseVendorList from '@/components/ItemComponents/ItemsChooseVendorList.vue'
+import type { Vendor } from '@/lib/vendor'
+import { useHead } from '@vueuse/head'
 
+let vendors = ref<Vendor[]>([])
 export default defineComponent({
-  name: "ItemRegistrationForm",
-  components: { TopPanel },
+  name: 'ItemRegistrationForm',
+  components: { ItemsChooseVendorList, TopPanel },
   data() {
     return {
-      itemId: "",
-      name: "",
-      description: "",
-      imageUrl: "",
-      vendor: "",
-      purchaseCost: null,
-      salePrice: null,
-      totalStockAvailable: null,
-      status: ref(false),
-    };
+      itemID: '',
+      itemName: '',
+      itemDesc: '',
+      itemURL: '',
+      itemVendor: '',
+      itemPCost: null,
+      itemSPrice: null,
+      status: ref(true),
+      countChange: 0,
+      vendors,
+    }
+  },
+  setup() {
+    onMounted(async () => {
+      const querySnapshot = await getDocs(collection(db, 'Vendors'))
+      const vs = ref<Vendor[]>([])
+      querySnapshot.forEach((doc) => {
+        const v = {
+          id: doc.id,
+          Address: doc.data().Address,
+          Email: doc.data().Email,
+          Name: doc.data().Name,
+          Phone: doc.data().Phone,
+          URL: doc.data().URL,
+          LogoPath: doc.data().LogoPath,
+        }
+        vs.value.push(v)
+      })
+      vendors = vs
+    }),
+      useHead({
+        title: 'Add Item',
+        meta: [{ name: 'description', content: 'For adding items' }],
+      })
   },
   methods: {
     async addItem() {
-      let image: string = this.imageUrl;
-      if (image === "")
+      let image: string = this.itemURL
+      if (image === '')
         image =
-          "https://ae01.alicdn.com/kf/S350c52d3415d4f41a4579cbd10d982a6B.jpg";
-      await addDoc(collection(db, "Items"), {
-        Name: this.name,
-        Description: this.description,
-        Vendor: this.vendor,
-        itemId: this.itemId,
-        PurchaseCost: this.purchaseCost,
-        SalePrice: this.salePrice,
-        TotalStockAvailable: this.totalStockAvailable,
-        ImageItemUrl: this.imageUrl,
-      });
-      console.log("+");
+          'https://ae01.alicdn.com/kf/S350c52d3415d4f41a4579cbd10d982a6B.jpg'
+      await addDoc(collection(db, 'Items'), {
+        Name: this.itemName,
+        Description: this.itemDesc,
+        Vendor: this.itemVendor,
+        itemId: this.itemID,
+        PurchaseCost: this.itemPCost,
+        SalePrice: this.itemSPrice,
+        TotalStockAvailable: this.countChange,
+        ImageItemUrl: image,
+      })
+      console.log('+')
       this.status = true
-      if (this.status)
-        await router.push('/items')
-    }
+      if (this.status) await router.push('/items')
+    },
   },
-});
+})
 </script>
 
 <template>
@@ -66,51 +93,44 @@ export default defineComponent({
   <div class="registration-form">
     <form @submit.prevent="addItem">
       <div class="input-block">
-        <p for="xxx_fname" class="form-label required">Item ID</p>
-        <input aria-label="Item ID" type="text" id="item-id" required v-model="itemId" />
+        <p for="xxx_fname" class="form-label required">Item-ID</p>
+        <input aria-label="Item-ID" type="text" required v-model="itemID" />
       </div>
 
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Name</p>
-        <input aria-label="Name" type="text" id="name" v-model="name" />
+        <input aria-label="Name" type="text" required v-model="itemName" />
       </div>
 
       <div class="input-block">
         <p>Description</p>
-        <input
-          aria-label="Description"
-          type="text"
-          id="description"
-          v-model="description"
-        />
+        <input type="text" id="text" v-model="itemDesc" />
       </div>
 
       <div class="input-block">
-        <p for="xxx_fname" class="form-label required">Path to Image</p>
-        <input
-          aria-label="ImageUrl"
-          type="url"
-          placeholder="https://"
-          v-model="imageUrl"
-          required
-        />
+        <p>Path to Image</p>
+        <input type="url" placeholder="https://" v-model="itemURL" />
       </div>
 
       <div class="input-block">
-        <p>Vendor</p>
-        <select v-model="vendor">
-          <option value="1">Company 1</option>
+        <p for="xxx_fname" class="form-label required">Vendor</p>
+        <select v-model="itemVendor" required>
+          <ItemsChooseVendorList
+            v-for="vendor in vendors"
+            :key="vendor.id"
+            :name="vendor.Name"
+          >
+          </ItemsChooseVendorList>
         </select>
       </div>
 
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Purchase Cost ($)</p>
         <input
-          aria-label="PurchaseCost"
           type="number"
           step="0.01"
           placeholder="0.00"
-          v-model="purchaseCost"
+          v-model="itemPCost"
           required
         />
       </div>
@@ -118,49 +138,33 @@ export default defineComponent({
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Sale price ($)</p>
         <input
-          aria-label="SalePrice"
           type="number"
           step="0.01"
           placeholder="0.00"
-          v-model="salePrice"
+          v-model="itemSPrice"
           required
         />
       </div>
 
       <div class="input-block">
         <p for="xxx_fname" class="form-label required">Total Stock Available</p>
+        <span class="slider-value">{{ countChange }}</span>
         <input
-          aria-label="TotalStockAvailable"
-          type="number"
-          step="1"
-          placeholder="0"
-          v-model="totalStockAvailable"
+          type="range"
+          max="100"
+          v-model="countChange"
+          id="countChange"
           required
         />
       </div>
-
       <div class="bottom-panel" id="bottom-panel">
         <a @click="$router.back()" href="#" class="nav-item">Cancel</a>
-        <input
-          type="submit"
-          value="Save"
-          class="nav-item"
-          id="save"
-        />
+        <input type="submit" value="Save" class="nav-item" id="save" />
       </div>
-      <!-- <save-panel
-        table-name="Vendors"
-        :name="this.inputName"
-        :address="this.inputAddress"
-        :email="this.inputEmail"
-        :url="this.inputUrl"
-        :phone="this.inputPhone"
-        :status="this.status"
-      ></save-panel> -->
     </form>
   </div>
 
-  <top-panel name_of_page="Items Form" vis="visible"></top-panel>
+  <top-panel name_of_page="Add" vis="visible"></top-panel>
 </template>
 
 <style scoped>
@@ -180,7 +184,7 @@ export default defineComponent({
 input {
   width: 100%;
   height: 48px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #202124;
   border-radius: 6px;
@@ -190,7 +194,7 @@ input {
 select {
   width: 100%;
   height: 48px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #202124;
   border-radius: 6px;
@@ -201,22 +205,13 @@ select:checked {
   border: solid 3px #464646;
 }
 
-input {
-  width: 100%;
-  height: 48px;
-  font-family: "Rubik", sans-serif;
-  font-size: 20px;
-  color: #202124;
-  border-radius: 6px;
-  border: solid 1px #8f8f8f;
-}
-
 p {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 18px;
   color: #202124;
   position: relative;
   opacity: 80%;
+  padding: 0;
 }
 
 .input-block {
@@ -238,7 +233,7 @@ p {
 }
 
 .required:after {
-  content: " *";
+  content: ' *';
   color: red;
   font-weight: 100;
 }
@@ -259,7 +254,7 @@ p {
 }
 
 .nav-item {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   flex: 1 1 auto;
   /* margin: 0 80px; */
   padding: 15px;
@@ -282,24 +277,41 @@ p {
   color: #565ed7;
   font-weight: bolder;
   font-size: 17px;
+  border-radius: 0;
 }
 
-input:hover {
-  cursor: pointer;
+.slider-value {
+  font-family: 'Rubik', sans-serif;
+  font-size: 16px;
+  color: #202124;
+  position: relative;
 }
-
 
 @media only screen and (max-width: 720px) {
+  input {
+    width: 95%;
+  }
+
   .registration-form {
     width: 97vw;
   }
 
-  input {
-    width: 97%;
+  select {
+    width: 95%;
+  }
+
+  #countChange {
+    width: 90%;
   }
 }
 
 @media only screen and (min-height: 915px) {
+  .registration-form {
+    height: calc(100vh + 120px);
+  }
+}
+
+@media only screen and (min-height: 1100px) {
   .registration-form {
     height: calc(100vh - 120px);
   }

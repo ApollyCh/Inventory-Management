@@ -1,38 +1,52 @@
 <script setup lang="ts">
-import TopPanel from "../TopPanel.vue";
-import BottomPanel from "../BottomPanel.vue";
-import { useRouter, useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
-import db from "../dataBase";
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
-import type { Vendor } from "@/lib/vendor";
+import TopPanel from '../TopPanel.vue'
+import BottomPanel from '../BottomPanel.vue'
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import db from '../dataBase'
+import { doc, getDoc, deleteDoc } from 'firebase/firestore'
+import type { Vendor } from '@/lib/vendor'
+import { useHead } from '@vueuse/head'
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
-let show = ref(false);
-const vendor = ref<Vendor>();
-const r = ref<any>();
-r.value = route.params;
+let show = ref(false)
+const vendor = ref<Vendor>()
+const r = ref<any>()
+r.value = route.params
 onMounted(async () => {
-  const docRef = doc(db, "Vendors", r.value.id);
-  const docSnap = await getDoc(docRef);
-  vendor.value = docSnap.data() as Vendor;
-  show.value = true;
-});
+  const docRef = doc(db, 'Vendors', r.value.id)
+  const docSnap = await getDoc(docRef)
+  vendor.value = docSnap.data() as Vendor
+  show.value = true
+  useHead({
+    title: vendor.value?.Name,
+    meta: [
+      { name: 'description', content: 'Information about item' },
+      { property: 'og:title', content: vendor.value?.Name },
+      {
+        property: 'og:description',
+        content: `Important information about vendor ${vendor.value?.Name}`,
+      },
+      { property: 'og:image', content: vendor.value?.LogoPath },
+      { property: 'og:type', content: 'vendor.element' },
+    ],
+  })
+})
 
 const deleteVendor = async () => {
-  await deleteDoc(doc(db, "Vendors", r.value.id));
+  await deleteDoc(doc(db, 'Vendors', r.value.id))
   await router.push({
-    path: "/vendors",
-  });
-};
+    path: '/vendors',
+  })
+}
 
 const toEditVendor = () => {
-  router.push(`/vendors/${r.value.id}/edit`);
-};
+  router.push(`/vendors/${r.value.id}/edit`)
+}
 
-const modal = ref(false);
+const modal = ref(false)
 </script>
 
 <template>
@@ -64,27 +78,27 @@ const modal = ref(false);
     <div class="all-container">
       <div class="name">
         <p class="type-of-inf">Name</p>
-        <p class="information">{{ vendor?.Name ?? "" }}</p>
+        <p class="information">{{ vendor?.Name ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">URL</p>
-        <p class="information">{{ vendor?.URL ?? "" }}</p>
+        <p class="information">{{ vendor?.URL ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Phone</p>
-        <p class="information">{{ vendor?.Phone ?? "" }}</p>
+        <p class="information">{{ vendor?.Phone ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Email</p>
-        <p class="information">{{ vendor?.Email ?? "" }}</p>
+        <p class="information">{{ vendor?.Email ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Address</p>
-        <p class="information">{{ vendor?.Address ?? "" }}</p>
+        <p class="information">{{ vendor?.Address ?? '' }}</p>
       </div>
     </div>
     <button
@@ -136,7 +150,7 @@ img {
 }
 
 p.type-of-inf {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   color: #202124;
   position: relative;
@@ -144,7 +158,7 @@ p.type-of-inf {
 }
 
 p.information {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #202124;
   position: relative;
@@ -168,7 +182,7 @@ p.information {
 .yes-delete {
   width: 45%;
   height: 50px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #ffffff;
   position: relative;
@@ -192,7 +206,7 @@ p.information {
 .no-delete {
   width: 45%;
   height: 50px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #343434;
   position: relative;
@@ -229,7 +243,7 @@ p.information {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #ffffff;
   position: relative;
@@ -246,7 +260,7 @@ p.information {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #ffffff;
   position: relative;
@@ -267,15 +281,12 @@ p.information {
   cursor: pointer;
   box-shadow: -2px 2px 8px 4px rgb(151, 158, 190);
 }
-@media only screen and (min-height: 800px) {
 
+@media only screen and (min-height: 800px) {
   .container-of-vendor {
     padding-bottom: 20px;
   }
-
 }
-
-
 
 @media only screen and (max-width: 720px) {
   .container-of-vendor {
