@@ -1,38 +1,50 @@
 <script setup lang="ts">
-import TopPanel from "../TopPanel.vue";
-import BottomPanel from "../BottomPanel.vue";
-import { useRouter, useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
-import db from "../dataBase";
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
-import type { Item } from "@/lib/item";
+import TopPanel from '../TopPanel.vue'
+import BottomPanel from '../BottomPanel.vue'
+import { useRouter, useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import db from '../dataBase'
+import { doc, getDoc, deleteDoc } from 'firebase/firestore'
+import type { Item } from '@/lib/item'
+import { useHead } from '@vueuse/head'
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
 let show = ref(false)
-const item = ref<Item>();
-const r = ref<any>();
-r.value = route.params;
+const item = ref<Item>()
+const r = ref<any>()
+r.value = route.params
+
 onMounted(async () => {
-  const docRef = doc(db, "Items", r.value.id);
-  const docSnap = await getDoc(docRef);
-  item.value = docSnap.data() as Item;
+  const docRef = doc(db, 'Items', r.value.id)
+  const docSnap = await getDoc(docRef)
+  item.value = docSnap.data() as Item
   show.value = true
-});
+  useHead({
+    title: item.value?.Name,
+    meta: [
+      { name: 'description', content: 'Information about item' },
+      { property: 'og:title', content: item.value?.Name },
+      { property: 'og:description', content: item.value?.Description },
+      { property: 'og:image', content: item.value?.ImageItemUrl },
+      { property: 'og:type', content: 'product.item' },
+    ],
+  })
+})
 
 const deleteItem = async () => {
-  await deleteDoc(doc(db, "Items", r.value.id));
+  await deleteDoc(doc(db, 'Items', r.value.id))
   await router.push({
-    path: "/items",
-  });
-};
+    path: '/items',
+  })
+}
 
 const toEditItem = () => {
-  router.push(`/items/${r.value.id}/edit`);
-};
+  router.push(`/items/${r.value.id}/edit`)
+}
 
-const modal = ref(false);
+const modal = ref(false)
 </script>
 
 <template>
@@ -50,54 +62,52 @@ const modal = ref(false);
         d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
       ></path>
     </svg>
-
   </button>
 
   <div class="container-of-item" v-if="show">
-    <img
-      :src="item?.ImageItemUrl"
-      alt="Inventory Icon"
-    />
+    <img :src="item?.ImageItemUrl" alt="Inventory Icon" />
 
     <div class="all-container">
       <div class="name">
         <p class="type-of-inf">Name</p>
-        <p class="information">{{ item?.Name ?? "" }}</p>
+        <p class="information">{{ item?.Name ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Item ID</p>
-        <p class="information">{{ item?.itemId ?? "" }}</p>
+        <p class="information">{{ item?.itemId ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Description</p>
-        <p class="information">{{ item?.Description ?? "" }}</p>
+        <p class="information">{{ item?.Description ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Vendor</p>
-        <p class="information">{{ item?.Vendor ?? "" }}</p>
+        <p class="information">{{ item?.Vendor ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Purchase Cost</p>
-        <p class="information">{{ item?.PurchaseCost ?? "" }}</p>
+        <p class="information">${{ item?.PurchaseCost ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Sale Price</p>
-        <p class="information">{{ item?.SalePrice ?? "" }}</p>
+        <p class="information">${{ item?.SalePrice ?? '' }}</p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Current Stock Cost Value</p>
-        <p class="information">{{ item?.TotalStockAvailable * item?.PurchaseCost ?? "" }}</p>
+        <p class="information">
+          ${{ (item?.TotalStockAvailable ?? 0) * (item?.PurchaseCost ?? 0) }}
+        </p>
       </div>
 
       <div class="name">
         <p class="type-of-inf">Total Stock Available</p>
-        <p class="information">{{ item?.TotalStockAvailable ?? "" }}</p>
+        <p class="information">{{ item?.TotalStockAvailable ?? '' }}</p>
       </div>
     </div>
     <button
@@ -118,7 +128,7 @@ const modal = ref(false);
       </p>
       <button class="no-delete" @click="modal = !modal">No</button>
       <button class="yes-delete" @click="deleteItem">Yes</button>
-    </div>  
+    </div>
   </div>
   <top-panel name_of_page="Details"></top-panel>
 
@@ -135,7 +145,7 @@ const modal = ref(false);
   margin-left: auto;
   margin-right: auto;
   margin-top: 62px;
-  padding-bottom: 70px;
+  padding-bottom: 600px;
 }
 
 img {
@@ -148,7 +158,7 @@ img {
 }
 
 p.type-of-inf {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   color: #202124;
   position: relative;
@@ -156,7 +166,7 @@ p.type-of-inf {
 }
 
 p.information {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #202124;
   position: relative;
@@ -174,12 +184,13 @@ p.information {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  padding-bottom: 70px;
 }
 
 .yes-delete {
   width: 45%;
   height: 50px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #ffffff;
   position: relative;
@@ -203,7 +214,7 @@ p.information {
 .no-delete {
   width: 45%;
   height: 50px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #343434;
   position: relative;
@@ -240,7 +251,7 @@ p.information {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #ffffff;
   position: relative;
@@ -262,7 +273,7 @@ p.information {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   color: #ffffff;
   position: relative;
@@ -274,28 +285,27 @@ p.information {
   margin-bottom: 20px;
 }
 
-.round-button {
-  position: fixed;
-  width: 80px;
-  height: 80px;
-  line-height: 70px;
-  border: 2px solid #f5f5f5;
-  border-radius: 50%;
-  color: #f5f5f5;
-  text-align: center;
-  text-decoration: none;
-  background: #565ed7;
-  box-shadow: 0 0 3px gray;
-  font-size: 45px;
-  font-family: "Rubik", sans-serif;
-  font-weight: bold;
-  top: 550px;
-  left: 93%;
+@media only screen and (min-height: 800px) {
+  .container-of-item {
+    padding-bottom: 500px;
+  }
 }
 
-.round-button:hover {
-  background: #848cff;
-  transition: background-color 0.3s;
-  cursor: pointer;
+@media only screen and (max-width: 720px) {
+  .container-of-item {
+    width: 97vw;
+  }
+}
+
+@media only screen and (min-height: 700px) {
+  .container-of-item {
+    height: calc(100vh - 120px);
+  }
+}
+
+@media only screen and (min-height: 600px) and (max-height: 700px) {
+  .container-of-item {
+    height: 660px;
+  }
 }
 </style>

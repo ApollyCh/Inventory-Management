@@ -1,63 +1,67 @@
 <script lang="ts">
-import { defineComponent } from "vue";
-import TopPanel from "@/components/TopPanel.vue";
-import BottomPanel from "@/components/BottomPanel.vue";
-import { useRouter } from "vue-router";
-import ItemCardOnPage from "@/components/ItemComponents/ItemCardOnPage.vue";
-import ItemsList from "@/components/ItemComponents/ItemsList.vue";
-import ItemRegistrationForm from "@/components/ItemComponents/ItemRegistrationForm.vue";
+import { defineComponent } from 'vue'
+import TopPanel from '@/components/TopPanel.vue'
+import BottomPanel from '@/components/BottomPanel.vue'
+import { useRouter } from 'vue-router'
+import ItemsList from '@/components/ItemComponents/ItemsList.vue'
+import { useHead } from '@vueuse/head'
 
 export default defineComponent({
-  name: "ItemsPage",
+  name: 'ItemsPage',
   components: {
-    ItemRegistrationForm,
     ItemsList,
     TopPanel,
-    BottomPanel
+    BottomPanel,
   },
   data() {
     return {
-      showComponent: false
+      showComponent: false,
     }
   },
   setup() {
+    useHead({
+      title: 'Items',
+      meta: [{ name: 'description', content: 'Storage all items' }],
+    })
     const router = useRouter()
     const click = () => {
       router.push({
-        path: '/items/add'
+        path: '/items/add',
       })
     }
     return {
-      click
+      click,
     }
-  }
+  },
 })
 </script>
 
 <template>
   <div>
-   <TopPanel name_of_page="Items"></TopPanel>
-   <BottomPanel></BottomPanel>
-   <ItemsList></ItemsList>
-<!-- <ItemRegistrationForm></ItemRegistrationForm> -->
+    <TopPanel name_of_page="Items"></TopPanel>
+    <BottomPanel></BottomPanel>
+    <ItemsList></ItemsList>
 
     <div class="add-buttons">
-      <button class="round-button" data-toggle="tooltip" data-placement="right" title="Add" 
-          @click="click">+
+      <button
+        class="round-button"
+        data-toggle="tooltip"
+        data-placement="right"
+        title="Add"
+        @click="click"
+      >
+        +
       </button>
-      <add-item-form v-if="showComponent"></add-item-form>
     </div>
   </div>
 </template>
 
 <style scoped>
-
-
 .round-button {
   position: fixed;
   width: 80px;
   height: 80px;
-  line-height: 70px;
+  line-height: 60px;
   border: 2px solid #f5f5f5;
   border-radius: 50%;
   color: #f5f5f5;
@@ -68,9 +72,8 @@ export default defineComponent({
   font-size: 45px;
   font-family: 'Rubik', sans-serif;
   font-weight: bold;
-  top: 510px;
-  left: 93%;
-
+  top: calc(100vh - 140px);
+  left: calc(100vw - 85px);
 }
 
 .round-button:hover {
@@ -95,7 +98,6 @@ export default defineComponent({
 }
 
 @media only screen and (min-width: 480px) and (max-width: 1024px) {
-
   .round-button {
     width: 70px;
     height: 70px;

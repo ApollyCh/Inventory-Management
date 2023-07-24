@@ -3,9 +3,9 @@
     <VendorCardOnPage
       v-for="vendor in vendors"
       :key="vendor.id"
-      :name_of_company="vendor.name"
-      :num="vendor.phone"
-      :logo="vendor.logo"
+      :name_of_company="vendor.Name"
+      :num="vendor.Phone"
+      :logo="vendor.LogoPath"
       @click="goToVendor(vendor.id)"
     >
     </VendorCardOnPage>
@@ -13,53 +13,53 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted } from 'vue'
 
-import { collection, getDocs } from "firebase/firestore";
-import VendorCardOnPage from "../VendorComponents/VendorCardOnPage.vue";
-import db from "../dataBase";
-import type { Vendor } from "@/lib/vendor";
+import { collection, getDocs } from 'firebase/firestore'
+import VendorCardOnPage from '../VendorComponents/VendorCardOnPage.vue'
+import db from '../dataBase'
+import type { Vendor } from '@/lib/vendor'
 
-export const vendors = ref([]) as any;
+let vendors = ref<Vendor[]>([])
 export default defineComponent({
-  name: "VendorList",
+  name: 'VendorList',
   components: {
     VendorCardOnPage,
   },
   setup() {
     onMounted(async () => {
-      const querySnapshot = await getDocs(collection(db, "Vendors"));
-      let vs = [] as Vendor;
+      const querySnapshot = await getDocs(collection(db, 'Vendors'))
+      const vs = ref<Vendor[]>([])
       querySnapshot.forEach((doc) => {
         const v = {
           id: doc.id,
-          name: doc.data().Name,
-          address: doc.data().Address,
-          phone: doc.data().Phone,
-          url: doc.data().URL,
-          email: doc.data().Email,
-          logo: doc.data().LogoPath,
-        };
-        vs.push(v);
-      });
-      vendors.value = vs;
-    });
+          Address: doc.data().Address,
+          Email: doc.data().Email,
+          Name: doc.data().Name,
+          Phone: doc.data().Phone,
+          URL: doc.data().URL,
+          LogoPath: doc.data().LogoPath,
+        }
+        vs.value.push(v)
+      })
+      vendors.value = vs.value
+    })
   },
 
   data() {
     return {
       vendors,
       selectedVendor: null,
-    };
+    }
   },
 
   methods: {
     goToVendor(vendorId: string) {
-      this.$router.push(`/vendors/${vendorId}`);
-      console.log("tap");
+      this.$router.push(`/vendors/${vendorId}`)
+      console.log('tap')
     },
   },
-});
+})
 </script>
 
 <style scoped>

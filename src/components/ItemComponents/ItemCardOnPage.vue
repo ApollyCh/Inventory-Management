@@ -1,15 +1,15 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "ItemCardOnPage",
-  props: ["name", "description", "image"],
-});
+  name: 'ItemCardOnPage',
+  props: ['name', 'description', 'image'],
+})
 </script>
 
 <template>
   <div class="item">
-    <img :src="image"  alt="item-icon"/>
+    <img :src="image" alt="item-icon" />
     <div class="info">
       <h2>{{ name }}</h2>
       <h3>{{ description }}</h3>
@@ -22,9 +22,8 @@ export default defineComponent({
   background-color: rgb(254, 254, 254);
   width: 310px;
   height: 82px;
-  margin-top: 80px;
+  margin-top: 60px;
   border: solid 1px #dbdbdb;
-  /* margin-left: 30px; */
 }
 
 .item:hover {
@@ -34,15 +33,15 @@ export default defineComponent({
 }
 
 h2 {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
   color: #202124;
   position: relative;
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 h3 {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   position: relative;
   color: #202124;
@@ -55,6 +54,7 @@ h3 {
   position: relative;
   margin-top: -75px;
   margin-left: 95px;
+  width: 150px;
 }
 
 img {

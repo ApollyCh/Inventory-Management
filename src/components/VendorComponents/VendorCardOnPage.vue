@@ -1,10 +1,10 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "VendorCardOnPage",
-  props: ["id", "name_of_company", "num", "email", "logo"],
-});
+  name: 'VendorCardOnPage',
+  props: ['id', 'name_of_company', 'num', 'email', 'logo'],
+})
 </script>
 
 <template>
@@ -33,7 +33,7 @@ export default defineComponent({
 }
 
 h2 {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
   color: #202124;
   position: relative;
@@ -41,7 +41,7 @@ h2 {
 }
 
 h3 {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   position: relative;
   color: #202124;
@@ -54,6 +54,7 @@ h3 {
   position: relative;
   margin-top: -75px;
   margin-left: 90px;
+  width: 150px;
 }
 
 img {

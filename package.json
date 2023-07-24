@@ -8,10 +8,11 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "prettier": "prettier --check . && eslint ."
+    "lint": "eslint . --ext .vue,.js,.jsx,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "check": "prettier --check . && eslint ."
   },
   "dependencies": {
+    "@vueuse/head": "^1.1.26",
     "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.10.5",
     "firebase": "^9.23.0",
@@ -20,6 +21,7 @@
     "module": "^1.2.5",
     "require": "^2.4.20",
     "vue": "^3.3.4",
+    "vue-meta": "^2.4.0",
     "vue-router": "^4.2.2",
     "webpack": "^5.88.1"
   },

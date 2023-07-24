@@ -1,9 +1,9 @@
 export interface Vendor {
-  id: string;
-  address: string;
-  email: string;
-  name: string;
-  phone: string;
-  url: string;
-  logo: string;
+  id: string
+  Address: string
+  Email: string
+  Name: string
+  Phone: string
+  URL: string
+  LogoPath: string
 }

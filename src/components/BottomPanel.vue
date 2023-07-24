@@ -1,34 +1,13 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-import router from "@/router";
-
-export default defineComponent({
-  name: 'BottomPanel',
-  setup() {
-    const toItems = () => {
-      router.push({
-        path: '/items'
-      })
-    }
-    return {
-      toItems
-    }
-  }
-})
-
-
-</script>
-
 <template>
   <div class="bottom-panel" id="bottom-panel">
-    <a href="/items" class="nav-item" @click="toItems">Items</a>
+    <a href="/" class="nav-item">Home</a>
+    <a href="/items" class="nav-item">Items</a>
     <a href="/log" class="nav-item">Inventory Log</a>
     <a href="/vendors" class="nav-item">Vendors</a>
   </div>
 </template>
 
 <style scoped>
-
 .bottom-panel {
   position: fixed;
   bottom: 0;
@@ -41,9 +20,7 @@ export default defineComponent({
   justify-content: center;
   margin: 0;
   box-shadow: 0 0 10px 0 rgb(121, 112, 112);
-  z-index: 10000;
-
-
+  z-index: 3000;
 }
 
 .nav-item {
@@ -61,8 +38,6 @@ export default defineComponent({
 .nav-item:hover {
   background-color: #c8c8c8;
   color: #202124;
-  transition: background-color 0.5s
+  transition: background-color 0.5s;
 }
-
-
 </style>
