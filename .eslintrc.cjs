@@ -10,7 +10,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
-  globals: {
-    globalThis: false,
+  env: {
+    browser: true,
+    es2017: true,
+    node: true,
   },
 }
