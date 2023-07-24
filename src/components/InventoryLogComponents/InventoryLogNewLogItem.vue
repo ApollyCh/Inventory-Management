@@ -5,6 +5,7 @@
     import InventoryLogNewLogItemList from "./InventoryLogNewLogItemList.vue";
     import { addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
     import db from "@/components/dataBase";
+    
 
     import { useRouter } from "vue-router";
 
@@ -61,7 +62,7 @@
                 console.log("+");
                 this.status = true
                 if (this.status)
-                await router.push('/log')
+                    await router.push({path: "/log"})
             },
             
             checkCurrentItem(){
@@ -109,7 +110,7 @@
 <template>
     <TopPanel name_of_page="Add new log"></TopPanel>
     <div class="new-log-form">
-        <form @submit.prevent="addInventoryLog">
+        <form>
             <div class="chosen-item">
                 <label for="itemId">Item ID</label>
                 <select v-model="itemId" id="itemId" required>
@@ -132,8 +133,8 @@
             </div>
             
             <div class="buttons">
-                <button class="submitButton" type="submit">Add</button>
-                <button class="cancelButton" type="button" @click="$router.back">Cancel</button>
+                <button class="submitButton" @click="addInventoryLog">Add</button>
+                <button class="cancelButton" @click="$router.back">Cancel</button>
             </div>
             
         </form>
