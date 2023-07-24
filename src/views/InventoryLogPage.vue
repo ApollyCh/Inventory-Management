@@ -71,14 +71,16 @@ export default defineComponent({
   width: 80px;
   height: 80px;
   line-height: 60px;
+  border: 2px solid #f5f5f5;
   border-radius: 50%;
+  color: #f5f5f5;
   text-align: center;
-  font-size: 40px;
-  color: #fff;
+  text-decoration: none;
   background: #565ed7;
   box-shadow: 0 0 3px gray;
-  cursor: pointer;
-  transition: 0.3s;
+  font-size: 45px;
+  font-family: 'Rubik', sans-serif;
+  font-weight: bold;
   top: calc(100vh - 140px);
   left: calc(100vw - 100px);
 }
