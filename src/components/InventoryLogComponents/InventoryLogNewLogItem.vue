@@ -8,7 +8,7 @@ import db from '@/components/dataBase'
 import router from '@/router'
 import type { Item } from '@/lib/item'
 
-export const items = ref([]) as any
+export const items = ref<Item[]>([])
 
 export default defineComponent({
   name: 'InventoryLogPage',
@@ -66,7 +66,7 @@ export default defineComponent({
 
     findItemNameByItemId(itemId: string) {
       for (let i = 0; i < items.value.length; i++) {
-        if (items.value[i].itemIdFromList === itemId) {
+        if (items.value[i].itemId === itemId) {
           return items.value[i].Name
         }
       }
@@ -75,8 +75,8 @@ export default defineComponent({
 
     changeMinSliderValue(itemId: string) {
       for (let i = 0; i < items.value.length; i++) {
-        if (items.value[i].itemIdFromList === itemId) {
-          this.minForSlider = -items.value[i].totalCount
+        if (items.value[i].itemId === itemId) {
+          this.minForSlider = -items.value[i].TotalStockAvailable
         }
       }
       return null
@@ -85,18 +85,23 @@ export default defineComponent({
   setup() {
     onMounted(async () => {
       const querySnapshot = await getDocs(collection(db, 'Items'))
-      let ils = [] as any
+      let ils = ref<Item[]>([])
       querySnapshot.forEach((doc) => {
         const il = {
           id: doc.id,
-          itemIdFromList: doc.data().itemId,
+          itemId: doc.data().itemId,
           Name: doc.data().Name,
           ImageItemUrl: doc.data().ImageItemUrl,
-          totalCount: doc.data().TotalStockAvailable,
+          TotalStockAvailable: doc.data().TotalStockAvailable,
+          PurchaseCost: doc.data().PurchaseCost,
+          SalePrice: doc.data().SalePrice,
+          Vendor: doc.data().Vendor,
+          Description: doc.data().Description,
+          CurrentStockCostValue: doc.data().CurrentStockCostValue,
         }
-        ils.push(il)
+        ils.value.push(il)
       })
-      items.value = ils
+      items.value = ils.value
     })
   },
 })
@@ -113,7 +118,7 @@ export default defineComponent({
             v-for="item in items"
             :key="item.id"
             :id="item.id"
-            :itemId="item.itemIdFromList"
+            :itemId="item.itemId"
             :name="item.Name"
             :imageItemUrl="item.ImageItemUrl"
           >
@@ -136,8 +141,8 @@ export default defineComponent({
       </div>
 
       <button class="submitButton" type="submit">Add</button>
-      <button class="cancelButton" @click="$router.back">Cancel</button>
     </form>
+    <button class="cancelButton" @click="$router.back">Cancel</button>
   </div>
 
   <BottomPanel></BottomPanel>
@@ -156,6 +161,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
   max-width: 90vw;
   min-width: 35vw;
   height: 60vh;
@@ -242,9 +248,13 @@ export default defineComponent({
   color: #202124;
 }
 
+.new-log-form form .buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .new-log-form form .submitButton {
-  position: relative;
-  top: -40px;
   width: 100%;
   height: 48px;
   background: #f2994a;
@@ -265,8 +275,6 @@ export default defineComponent({
 }
 
 .new-log-form .cancelButton {
-  position: relative;
-  top: -65px;
   max-width: 90vw;
   min-width: 35vw;
   height: 48px;
