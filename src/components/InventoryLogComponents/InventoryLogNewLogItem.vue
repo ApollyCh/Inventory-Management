@@ -171,6 +171,7 @@ export default defineComponent({
 
   padding-left: 2%;
   padding-right: 2%;
+  padding-bottom: 2%;
 }
 
 .new-log-form form .chosen-item {
@@ -275,6 +276,9 @@ export default defineComponent({
 }
 
 .new-log-form .cancelButton {
+  position: absolute;
+  top: calc(75%);
+
   max-width: 90vw;
   min-width: 35vw;
   height: 48px;
