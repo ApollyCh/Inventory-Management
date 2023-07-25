@@ -277,7 +277,7 @@ export default defineComponent({
 
 .new-log-form .cancelButton {
   position: absolute;
-  top: calc(75%);
+  top: calc(76%);
 
   max-width: 90vw;
   min-width: 35vw;
